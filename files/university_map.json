@@ -1,0 +1,581 @@
+{
+  "locations": [
+    {
+      "id": "EMERGENCY_SPOT",
+      "name": "Ponto de Emergência ESTG",
+      "maximum_capacity": 10000,
+      "restricted_to": ""
+    },
+    {
+      "id": "HALL_RECEPCAO",
+      "name": "Hall de Recepção",
+      "maximum_capacity": 10,
+      "restricted_to": ""
+    },
+    {
+      "id": "SERVICOS_ACADEMICOS",
+      "name": "Serviços Académicos",
+      "maximum_capacity": 10,
+      "restricted_to": ""
+    },
+    {
+      "id": "0.1",
+      "name": "0.1 - Sala de Uso Livre",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "0.3",
+      "name": "0.3 - Laboratório de Informática",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "1.2",
+      "name": "1.2",
+      "maximum_capacity": 5,
+      "restricted_to": "TEACHER"
+    },
+    {
+      "id": "1.3",
+      "name": "1.3",
+      "maximum_capacity": 5,
+      "restricted_to": "TEACHER"
+    },
+    {
+      "id": "1.4A",
+      "name": "1.4A",
+      "maximum_capacity": 5,
+      "restricted_to": "TEACHER"
+    },
+    {
+      "id": "1.4B",
+      "name": "1.4B",
+      "maximum_capacity": 5,
+      "restricted_to": "TEACHER"
+    },
+    {
+      "id": "1.5",
+      "name": "1.5",
+      "maximum_capacity": 5,
+      "restricted_to": "TEACHER"
+    },
+    {
+      "id": "CI",
+      "name": "Centro de Informática",
+      "maximum_capacity": 5,
+      "restricted_to": "WORKER"
+    },
+    {
+      "id": "PRESIDENCIA",
+      "name": "Presidência",
+      "maximum_capacity": 3,
+      "restricted_to": "WORKER"
+    },
+    {
+      "id": "2.1",
+      "name": "2.1",
+      "maximum_capacity": 5,
+      "restricted_to": "TEACHER"
+    },
+    {
+      "id": "2.2",
+      "name": "2.2",
+      "maximum_capacity": 5,
+      "restricted_to": "TEACHER"
+    },
+    {
+      "id": "SEC",
+      "name": "SEC",
+      "maximum_capacity": 3,
+      "restricted_to": "WORKER"
+    },
+    {
+      "id": "SAF",
+      "name": "SAF",
+      "maximum_capacity": 3,
+      "restricted_to": "WORKER"
+    },
+    {
+      "id": "RH",
+      "name": "Recursos Humanos",
+      "maximum_capacity": 10,
+      "restricted_to": "WORKER"
+    },
+    {
+      "id": "AUDN",
+      "name": "Auditório Professor Luís Soares",
+      "maximum_capacity": 50,
+      "restricted_to": ""
+    },
+    {
+      "id": "REUNIOES",
+      "name": "Sala de Reuniões",
+      "maximum_capacity": 50,
+      "restricted_to": ""
+    },
+    {
+      "id": "SALA_ESTUDO",
+      "name": "Sala de Estudo",
+      "maximum_capacity": 25,
+      "restricted_to": ""
+    },
+    {
+      "id": "AE",
+      "name": "Associação de Estudantes",
+      "maximum_capacity": 20,
+      "restricted_to": ""
+    },
+    {
+      "id": "BAR_CANTINA",
+      "name": "Bar/Cantina",
+      "maximum_capacity": 50,
+      "restricted_to": ""
+    },
+    {
+      "id": "POLIVALENTE",
+      "name": "Espaço Polivalente",
+      "maximum_capacity": 70,
+      "restricted_to": ""
+    },
+    {
+      "id": "REP",
+      "name": "Reprografia",
+      "maximum_capacity": 5,
+      "restricted_to": ""
+    },
+    {
+      "id": "A1",
+      "name": "A1 - Laboratório de Ciências Naturais e Exatas",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "A2",
+      "name": "A2 - Laboratório de Segurança e Saúde",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "A3",
+      "name": "CIICESI",
+      "maximum_capacity": 5,
+      "restricted_to": "TEACHER"
+    },
+    {
+      "id": "AUD1",
+      "name": "Auditório 1",
+      "maximum_capacity": 60,
+      "restricted_to": ""
+    },
+    {
+      "id": "AUD2",
+      "name": "Auditório 2",
+      "maximum_capacity": 60,
+      "restricted_to": ""
+    },
+    {
+      "id": "AUD3",
+      "name": "Auditório 3",
+      "maximum_capacity": 60,
+      "restricted_to": ""
+    },
+    {
+      "id": "AUD4",
+      "name": "Auditório 4",
+      "maximum_capacity": 60,
+      "restricted_to": ""
+    },
+    {
+      "id": "C1",
+      "name": "Biblioteca",
+      "maximum_capacity": 20,
+      "restricted_to": ""
+    },
+    {
+      "id": "C2",
+      "name": "C2",
+      "maximum_capacity": 5,
+      "restricted_to": ""
+    },
+    {
+      "id": "C3",
+      "name": "C3",
+      "maximum_capacity": 5,
+      "restricted_to": ""
+    },
+    {
+      "id": "C4",
+      "name": "C4",
+      "maximum_capacity": 5,
+      "restricted_to": ""
+    },
+    {
+      "id": "C5",
+      "name": "C5",
+      "maximum_capacity": 5,
+      "restricted_to": ""
+    },
+    {
+      "id": "P1",
+      "name": "P1-SA",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "P2",
+      "name": "P2-SA",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "P3",
+      "name": "P3 - Laboratório de Redes",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "P4",
+      "name": "P4-SA",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "P5",
+      "name": "P5-SA",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "P6",
+      "name": "P6 - Laboratório de Redes",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "P7",
+      "name": "P7-SA",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "P8",
+      "name": "P8-SA",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "P9",
+      "name": "P9 - Laboratório de Informática",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "P10",
+      "name": "P10 - Laboratório de Informática",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "P11",
+      "name": "P11 - Laboratório de Informática",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "P12-SA",
+      "name": "P12-SA",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "P13",
+      "name": "P13-SA",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    },
+    {
+      "id": "P14",
+      "name": "P14-SA",
+      "maximum_capacity": 30,
+      "restricted_to": ""
+    }
+  ],
+  "relationships": [
+    {
+      "from": "EMERGENCY_SPOT",
+      "to": "HALL_RECEPCAO",
+      "distance": 10
+    },
+    {
+      "from": "EMERGENCY_SPOT",
+      "to": "1.2",
+      "distance": 20
+    },
+    {
+      "from": "EMERGENCY_SPOT",
+      "to": "POLIVALENTE",
+      "distance": 30
+    },
+    {
+      "from": "EMERGENCY_SPOT",
+      "to": "AUD1",
+      "distance": 40
+    },
+    {
+      "from": "EMERGENCY_SPOT",
+      "to": "AUD4",
+      "distance": 45
+    },
+    {
+      "from": "EMERGENCY_SPOT",
+      "to": "P1",
+      "distance": 50
+    },
+    {
+      "from": "EMERGENCY_SPOT",
+      "to": "P6",
+      "distance": 50
+    },
+    {
+      "from": "EMERGENCY_SPOT",
+      "to": "C1",
+      "distance": 70
+    },
+    {
+      "from": "HALL_RECEPCAO",
+      "to": "0.3",
+      "distance": 1
+    },
+    {
+      "from": "HALL_RECEPCAO",
+      "to": "SA",
+      "distance": 1
+    },
+    {
+      "from": "SA",
+      "to": "0.1",
+      "distance": 1
+    },
+    {
+      "from": "0.1",
+      "to": "1.2",
+      "distance": 15
+    },
+    {
+      "from": "0.3",
+      "to": "1.4A",
+      "distance": 10
+    },
+    {
+      "from": "1.4A",
+      "to": "1.3",
+      "distance": 1
+    },
+    {
+      "from": "1.3",
+      "to": "1.2",
+      "distance": 2
+    },
+    {
+      "from": "1.4A",
+      "to": "1.4B",
+      "distance": 7
+    },
+    {
+      "from": "1.2",
+      "to": "CI",
+      "distance": 10
+    },
+    {
+      "from": "1.4B",
+      "to": "1.5",
+      "distance": 1
+    },
+    {
+      "from": "1.5",
+      "to": "CI",
+      "distance": 2
+    },
+    {
+      "from": "CI",
+      "to": "2.1",
+      "distance": 10
+    },
+    {
+      "from": "2.1",
+      "to": "2.2",
+      "distance": 1
+    },
+    {
+      "from": "2.2",
+      "to": "SAF",
+      "distance": 1
+    },
+    {
+      "from": "SAF",
+      "to": "SEC",
+      "distance": 1
+    },
+    {
+      "from": "SEC",
+      "to": "PRESIDENCIA",
+      "distance": 3
+    },
+    {
+      "from": "1.4B",
+      "to": "PRESIDENCIA",
+      "distance": 10
+    },
+    {
+      "from": "PRESIDENCIA",
+      "to": "RH",
+      "distance": 1
+    },
+    {
+      "from": "RH",
+      "to": "AUDN",
+      "distance": 1
+    },
+    {
+      "from": "AUDN",
+      "to": "REUNIOES",
+      "distance": 0.5
+    },
+    {
+      "from": "1.2",
+      "to": "SALA_ESTUDO",
+      "distance": 20
+    },
+    {
+      "from": "SALA_ESTUDO",
+      "to": "AE",
+      "distance": 0.5
+    },
+    {
+      "from": "1.2",
+      "to": "BAR_CANTINA",
+      "distance": 20
+    },
+    {
+      "from": "BAR_CANTINA",
+      "to": "REPROGRAFIA",
+      "distance": 5
+    },
+    {
+      "from": "BAR_CANTINA",
+      "to": "POLIVALENTE",
+      "distance": 2
+    },
+    {
+      "from": "BAR_CANTINA",
+      "to": "A1",
+      "distance": 10
+    },
+    {
+      "from": "A1",
+      "to": "A2",
+      "distance": 1
+    },
+    {
+      "from": "A1",
+      "to": "A3",
+      "distance": 1
+    },
+    {
+      "from": "P1",
+      "to": "P2",
+      "distance": 1
+    },
+    {
+      "from": "P2",
+      "to": "P3",
+      "distance": 1
+    },
+    {
+      "from": "P1",
+      "to": "P5",
+      "distance": 1
+    },
+    {
+      "from": "P5",
+      "to": "P4",
+      "distance": 1
+    },
+    {
+      "from": "P6",
+      "to": "P7",
+      "distance": 1
+    },
+    {
+      "from": "P6",
+      "to": "P10",
+      "distance": 1
+    },
+    {
+      "from": "P10",
+      "to": "P9",
+      "distance": 1
+    },
+    {
+      "from": "P9",
+      "to": "P8",
+      "distance": 1
+    },
+    {
+      "from": "P6",
+      "to": "P11",
+      "distance": 5
+    },
+    {
+      "from": "P11",
+      "to": "P14",
+      "distance": 1
+    },
+    {
+      "from": "P11",
+      "to": "P12",
+      "distance": 1
+    },
+    {
+      "from": "P12",
+      "to": "P13",
+      "distance": 1
+    },
+    {
+      "from": "AUD1",
+      "to": "AUD2",
+      "distance": 1
+    },
+    {
+      "from": "AUD1",
+      "to": "AUD3",
+      "distance": 3
+    },
+    {
+      "from": "AUD3",
+      "to": "AUD4",
+      "distance": 1
+    },
+    {
+      "from": "C1",
+      "to": "C2",
+      "distance": 3
+    },
+    {
+      "from": "C2",
+      "to": "C3",
+      "distance": 1
+    },
+    {
+      "from": "C2",
+      "to": "C4",
+      "distance": 1
+    },
+    {
+      "from": "C2",
+      "to": "C5",
+      "distance": 1
+    }
+  ]
+}
