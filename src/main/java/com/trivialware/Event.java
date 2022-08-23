@@ -3,9 +3,11 @@ package com.trivialware;
 import java.time.LocalTime;
 
 public class Event implements Comparable<Event> {
-    //null se não existente
+    //null se não existente, Desconhecido
     private Person person;
-    //null se não existente
+
+    private String personId;
+    //Não pode ser null
     private Location location;
     private LocalTime startTime;
     /*
@@ -15,18 +17,12 @@ public class Event implements Comparable<Event> {
      */
     private LocalTime endTime;
 
-    public Event(Person person, Location location, LocalTime startTime) {
+    public Event(Person person, String personId, Location location, LocalTime startTime) {
         this.person = person;
+        this.personId = personId;
         this.location = location;
         this.startTime = startTime;
         this.endTime = LocalTime.MAX;
-    }
-
-    public Event(Person person, Location location, LocalTime startTime, LocalTime endTime) {
-        this.person = person;
-        this.location = location;
-        this.startTime = startTime;
-        this.endTime = endTime;
     }
 
     public Person getPerson() {
@@ -61,6 +57,14 @@ public class Event implements Comparable<Event> {
         this.endTime = endTime;
     }
 
+    public String getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
+    }
+
     @Override
     public String toString() {
         return "Event{" +
@@ -76,4 +80,6 @@ public class Event implements Comparable<Event> {
     public int compareTo(Event o) {
         return startTime.compareTo(o.getStartTime());
     }
+
+
 }

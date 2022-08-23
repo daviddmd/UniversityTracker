@@ -1,5 +1,7 @@
 package com.trivialware;
 
+import java.util.Objects;
+
 /*
  * Todas as localizações a instanciar existirão no grafo, excepto uma localização especial que é o ponto de emergência
  * Nem todos os edifícios/localizações podem estar ligados entre si (exemplo, auditórios com pavilhões), porém, todos os
@@ -69,5 +71,13 @@ public class Location {
     @Override
     public String toString() {
         return String.format("%s-%s", getId(), getName());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return id.equals(location.id);
     }
 }

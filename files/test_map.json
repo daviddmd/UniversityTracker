@@ -1,0 +1,93 @@
+{
+  "locations": [
+    {
+      "id": "EMERGENCY_SPOT",
+      "name": "Ponto de Emergência ESTG",
+      "maximum_capacity": 10000,
+      "restricted_to": ""
+    },
+    {
+      "id": "A1",
+      "name": "Sala A1",
+      "maximum_capacity": 5,
+      "restricted_to": ""
+    },
+    {
+      "id": "A2",
+      "name": "Sala A2",
+      "maximum_capacity": 3,
+      "restricted_to": ""
+    },
+    {
+      "id": "A3",
+      "name": "Sala A3",
+      "maximum_capacity": 2,
+      "restricted_to": ""
+    },
+    {
+      "id": "A4",
+      "name": "Sala A4",
+      "maximum_capacity": 10,
+      "restricted_to": ""
+    },
+    {
+      "id": "G1",
+      "name": "Gabinete 1",
+      "maximum_capacity": 5,
+      "restricted_to": "TEACHER"
+    },
+    {
+      "id": "SA",
+      "name": "Serviços Académicos",
+      "maximum_capacity": 5,
+      "restricted_to": "WORKER"
+    }
+  ],
+  "relationships": [
+    {
+      "from": "EMERGENCY_SPOT",
+      "to": "SA",
+      "distance": 10
+    },
+    {
+      "from": "SA",
+      "to": "A1",
+      "distance": 4
+    },
+    {
+      "from": "SA",
+      "to": "A2",
+      "distance": 9
+    },
+    {
+      "from": "A1",
+      "to": "A2",
+      "distance": 1
+    },
+    {
+      "from": "A2",
+      "to": "G1",
+      "distance": 2
+    },
+    {
+      "from": "A2",
+      "to": "A3",
+      "distance": 2
+    },
+    {
+      "from": "A1",
+      "to": "A3",
+      "distance": 5
+    },
+    {
+      "from": "A3",
+      "to": "A4",
+      "distance": 3
+    },
+    {
+      "from": "A4",
+      "to": "G1",
+      "distance": 15
+    }
+  ]
+}

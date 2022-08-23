@@ -33,7 +33,7 @@ public class Person {
             };
         }
 
-        Role fromString(String role) {
+        static Role fromString(String role) {
             return switch (role) {
                 case "STUDENT" -> STUDENT;
                 case "TEACHER" -> TEACHER;
@@ -71,5 +71,13 @@ public class Person {
     @Override
     public String toString() {
         return String.format("%s-%s", getId(), getName());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return id.equals(person.id);
     }
 }

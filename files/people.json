@@ -1,0 +1,17 @@
+[
+  {
+    "id": "1",
+    "name": "Carlos Sousa",
+    "role": "STUDENT"
+  },
+  {
+    "id": "2",
+    "name": "Pedro Santos",
+    "role": "STUDENT"
+  },
+  {
+    "id": "3",
+    "name": "Rosa Soares",
+    "role": "WORKER"
+  }
+]
