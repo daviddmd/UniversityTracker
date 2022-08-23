@@ -4,8 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 
@@ -70,8 +69,20 @@ public class FileHelper {
         return people;
     }
 
-    public static void exportPeople(UnorderedListADT<Person> peopleList, String fileName) {
-
+    public static void exportPeople(UnorderedListADT<Person> peopleList, String fileName) throws IOException {
+        JSONArray peopleJSON = new JSONArray();
+        JSONObject personJSON;
+        for (Person person : peopleList) {
+            personJSON = new JSONObject();
+            personJSON.put("id", person.getId());
+            personJSON.put("name", person.getName());
+            personJSON.put("role", person.getRole() == null ? "" : Person.Role.fromRole(person.getRole()));
+            peopleJSON.put(personJSON);
+        }
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(fileName), StandardCharsets.UTF_8))) {
+            writer.write(peopleJSON.toString(4));
+        }
     }
 
     public static UndirectedNetworkADT<Location> buildNetwork(ListADT<Location> locations, String fileName) throws IOException {

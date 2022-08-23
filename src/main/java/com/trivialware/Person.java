@@ -42,6 +42,15 @@ public class Person {
                 default -> null;
             };
         }
+
+        static String fromRole(Role role) {
+            return switch (role) {
+                case STUDENT -> "STUDENT";
+                case TEACHER -> "TEACHER";
+                case WORKER -> "WORKER";
+                case OTHER -> "OTHER";
+            };
+        }
     }
 
     public String getId() {
