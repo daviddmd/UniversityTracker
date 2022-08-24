@@ -42,15 +42,10 @@ class UniversityTest {
         catch (IOException ex) {
             ex.printStackTrace();
         }
-
     }
 
     @Test
-    void setNumberOfPeopleCurrentlyInLocations() {
-    }
-
-    @Test
-    void getPeopleAtLocationAtTime() {
+    void printStuff() {
         for (Event event : university.getEvents()) {
             System.out.println(event);
         }
@@ -66,43 +61,60 @@ class UniversityTest {
     }
 
     @Test
-    void addLocation() {
-    }
-
-    @Test
-    void getLocationById() {
-    }
-
-    @Test
     void addPerson() {
+        Person person;
+        assertEquals(5, university.getPeople().size());
+        person = new Person("2", Person.Role.STUDENT, "Repetido");
+        assertFalse(university.addPerson(person));
+        assertEquals(5, university.getPeople().size());
+        person = new Person("6", Person.Role.STUDENT, "Mário Leigo");
+        assertTrue(university.addPerson(person));
+        assertEquals(6, university.getPeople().size());
+        assertEquals(person.getId(), university.getPeople().getLast().getId());
     }
 
     @Test
     void removePerson() {
+        Person person;
+        person = university.getPersonById("1");
+        assertEquals("Carlos Sousa", person.getName());
+        assertEquals(5, university.getPeople().size());
+        assertTrue(university.removePerson(person));
+        assertEquals(4, university.getPeople().size());
+        person = new Person("2", Person.Role.STUDENT, "Pedro Santos");
+        assertEquals(person, university.getPersonById("2"));
+        assertTrue(university.removePerson(person));
+        assertEquals(3, university.getPeople().size());
+        person = new Person("11", Person.Role.OTHER, "Inês Istente");
+        assertFalse(university.removePerson(person));
+        assertEquals(3, university.getPeople().size());
     }
 
     @Test
-    void getPersonById() {
+    void getAccessViolations(){
+
+    }
+
+
+    /*
+    @Test
+    void setNumberOfPeopleCurrentlyInLocations() {
+    }
+
+    @Test
+    void setNumberOfPeopleInLocationsInTimeFrame() {
+    }
+
+    @Test
+    void getOverlappingEvents() {
+    }
+
+    @Test
+    void getEventsOfPersonInTimeFrame() {
     }
 
     @Test
     void getCurrentEventByPerson() {
-    }
-
-    @Test
-    void getLocations() {
-    }
-
-    @Test
-    void getEvents() {
-    }
-
-    @Test
-    void getPeople() {
-    }
-
-    @Test
-    void setPeople() {
     }
 
     @Test
@@ -113,7 +125,5 @@ class UniversityTest {
     void addEvent() {
     }
 
-    @Test
-    void updateEventsPeople() {
-    }
+     */
 }

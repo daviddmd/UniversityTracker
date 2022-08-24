@@ -18,7 +18,7 @@ não há necessidade de operações que trariam vantagem às mesmas como remover
  */
 public class University {
     //Lista de Pessoas, Localizações e Eventos, métodos para caminhos mais curtos entre X e Ponto Emergência
-    private static final String EMERGENCY_SPOT_ID = "EMERGENCY_SPOT";
+    public static final String EMERGENCY_SPOT_ID = "EMERGENCY_SPOT";
     private final UnorderedListADT<Location> locations;
     //Pode vir a ser uma AVL Tree
     private final UnorderedListADT<Event> events;
@@ -73,7 +73,6 @@ public class University {
         }
         this.people = people;
         this.network = network;
-        setNumberOfPeopleCurrentlyInLocations();
     }
 
     /**
@@ -135,7 +134,9 @@ public class University {
     }
 
     /**
-     * Obtém os eventos (movimentos) de uma dada pessoa num intervalo temporal
+     * Obtém os eventos (movimentos) de uma dada pessoa num intervalo temporal.
+     * Permite indiretamente obter a localização de uma pessoa num dado intervalo temporal através de obter o primeiro
+     * evento nesse dado intervalo.
      *
      * @param personId Identificador único de uma certa pessoa
      * @param start    Hora de início do intervalo temporal (inclusive)
@@ -153,25 +154,40 @@ public class University {
         return eventList;
     }
 
+    /**
+     * Obtém os contactos (eventos) de uma pessoa num dado intervalo temporal. Faz uso da função
+     * {@link #getEventsOfPersonInTimeFrame(String, LocalTime, LocalTime) getEventsOfPersonInTimeFrame} para obter
+     * todos os eventos de uma pessoa num dado intervalo temporal em conjunção com a função
+     * {@link #getOverlappingEvents(ListADT) getOverlappingEvents}
+     * para obter todos os eventos (contactos) que estão sobrepostos a estes mesmos eventos, determinando os contactos
+     * que a pessoa realizou nos vários movimentos efetuados em várias localizações da universidade.
+     *
+     * @param personId Identificador único da pessoa no sistema
+     * @param start Hora de início do intervalo temporal (inclusive)
+     * @param end Hora de fim do intervalo temporal (inclusive)
+     * @return Lista com Eventos (Contactos) efetuados pela pessoa num dado intervalo temporal
+     */
+    public ListADT<Event> getOverlappingEventsOfPersonInTimeFrame(String personId, LocalTime start, LocalTime end) {
+        ListADT<Event> eventsOfPersonInTimeFrame = getEventsOfPersonInTimeFrame(personId, start, end);
+        return getOverlappingEvents(eventsOfPersonInTimeFrame);
+    }
 
     /**
-     * Adiciona uma localização da universidade ao sistema caso uma localização com o identificador a adicionar já
-     * não exista no sistema
-     *
-     * @param location Objeto que representa a localização a adicionar, com o Identificador único de uma Localização
-     *                 da universidade, o nome extenso dessa localização, a capacidade máxima dessa localização
-     *                 (inteiro) e o papel de Pessoa a que esta localização está restrito (Exemplo, apenas pode ser
-     *                 utilizado por pessoas do papel Professor ou Funcionário; caso seja null, significa que pode
-     *                 ser utilizado por qualquer pessoa independentemente do seu papel).
-     * @return true se a Localização foi adicionada com sucesso, false caso já exista uma localização com o
-     * identificador a adicionar no sistema.
+     * Obtém a primeira localização da pessoa num dado intervalo temporal, determinada pelo primeiro movimento/atividade
+     * que uma pessoa registou num dado intervalo temporal. Faz uso da função
+     * {@link #getEventsOfPersonInTimeFrame(String, LocalTime, LocalTime) getEventsOfPersonInTimeFrame} e retorna
+     * o primeiro evento caso existam eventos nesse intervalo temporal, caso contrário não retorna nada.
+     * @param personId Identificador único da pessoa no sistema
+     * @param start Hora de início do intervalo temporal (inclusive)
+     * @param end Hora de fim do intervalo temporal (inclusive)
+     * @return Primeira localização cronológica da pessoa num dado intervalo temporal, se existir
      */
-    public boolean addLocation(Location location) {
-        if (locations.contains(location)) {
-            return false;
+    public Location getLocationOfPersonInTimeFrame(String personId, LocalTime start, LocalTime end) {
+        ListADT<Event> eventsOfPersonInTimeFrame = getEventsOfPersonInTimeFrame(personId, start, end);
+        if (eventsOfPersonInTimeFrame.size() == 0) {
+            return null;
         }
-        locations.addLast(location);
-        return true;
+        return eventsOfPersonInTimeFrame.getFirst().getLocation();
     }
 
     /**
@@ -328,7 +344,7 @@ public class University {
      * eventos diferentes de null ou não.
      */
     public void updateEventsPeople() {
-        for (Event event : events) {
+        for (Event event : getEvents()) {
             event.setPerson(getPersonById(event.getPersonId()));
         }
     }
@@ -341,7 +357,7 @@ public class University {
      * @param person Pessoa que acabou de ser adicionada ao sistema a associar aos eventos em que o seu ID está presente
      */
     private void addPersonToEvents(Person person) {
-        for (Event event : events) {
+        for (Event event : getEvents()) {
             if (event.getPersonId().equals(person.getId())) {
                 event.setPerson(person);
             }
@@ -357,10 +373,50 @@ public class University {
      * @param person Pessoa que acabou de ser removida do sistema a desassociar aos eventos em que o seu ID está presente
      */
     private void removePersonFromEvents(Person person) {
-        for (Event event : events) {
+        for (Event event : getEvents()) {
             if (event.getPersonId().equals(person.getId())) {
                 event.setPerson(null);
             }
         }
+    }
+
+    /**
+     * Obtém a lista de violações de acesso registadas pelos movimentos do sistema.
+     * As violações podem ser do tipo de utilizador desconhecido ou do tipo de papel de utilizador insuficiente para
+     * acesso a localização. O modo como os mesmos se diferenciam é que eventos do primeiro tipo de violação terão
+     * o utilizador como um elemento nulo.
+     *
+     * @return Lista de Eventos com violações de acesso
+     */
+    public ListADT<Event> getAccessViolations() {
+        /*
+        Irá haver dois tipos de notificações, pessoas não existentes e falta de autorização. Detetar no runtime se
+        a pessoa do evento é nula, caso contrário é uma violação do tipo papel
+         */
+        UnorderedListADT<Event> violations = new DoublyLinkedList<>();
+        for (Event event : getEvents()) {
+            if (event.getPerson() == null) {
+                violations.addLast(event);
+            }
+            else {
+                if (event.getLocation().getRestrictedTo() != null) {
+                    switch (event.getLocation().getRestrictedTo()) {
+                        case TEACHER -> {
+                            if (event.getPerson().getRole() == Person.Role.WORKER ||
+                                    event.getPerson().getRole() == Person.Role.STUDENT) {
+                                violations.addLast(event);
+                            }
+                        }
+                        case WORKER -> {
+                            if (event.getPerson().getRole() == Person.Role.TEACHER ||
+                                    event.getPerson().getRole() == Person.Role.STUDENT) {
+                                violations.addLast(event);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return violations;
     }
 }

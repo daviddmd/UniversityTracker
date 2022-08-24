@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    implementation files('libs/DataStructures-1.1.jar')
+    implementation files('libs/DataStructures-1.2.jar')
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
     implementation 'org.json:json:20220320'

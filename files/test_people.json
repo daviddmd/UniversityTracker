@@ -1,0 +1,37 @@
+[
+  {
+    "id": "1",
+    "name": "Carlos Sousa",
+    "role": "STUDENT"
+  },
+  {
+    "id": "2",
+    "name": "Pedro Santos",
+    "role": "STUDENT"
+  },
+  {
+    "id": "3",
+    "name": "Rosa Soares",
+    "role": "WORKER"
+  },
+  {
+    "id": "4",
+    "name": "João Silva",
+    "role": "STUDENT"
+  },
+  {
+    "id": "5",
+    "name": "Ricardo Ferreira",
+    "role": "STUDENT"
+  },
+  {
+    "id": "6",
+    "name": "Rita Pacheco",
+    "role": "STUDENT"
+  },
+  {
+    "id": "7",
+    "name": "Rigoberto Campos",
+    "role": "TEACHER"
+  }
+]

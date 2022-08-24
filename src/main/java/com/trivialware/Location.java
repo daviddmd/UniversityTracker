@@ -23,6 +23,18 @@ public class Location {
     private int currentNumberPeople;
     private Person.Role restrictedTo;
 
+    /**
+     * Construtor para classe que representa a localização a adicionar, com o Identificador único de uma Localização
+     * da universidade, o nome extenso dessa localização, a capacidade máxima dessa localização
+     * (inteiro) e o papel de Pessoa a que esta localização está restrito (Exemplo, apenas pode ser
+     * utilizado por pessoas do papel Professor ou Funcionário; caso seja null, significa que pode
+     * ser utilizado por qualquer pessoa independentemente do seu papel).
+     *
+     * @param id              Identificador único da localização da universidade
+     * @param name            Nome da Localização na Universidade
+     * @param maximumCapacity Capacidade Máxima definida da localização
+     * @param restrictedTo    Papel de utilizador a que a localização está restrita
+     */
     public Location(String id, String name, int maximumCapacity, Person.Role restrictedTo) {
         this.id = id;
         this.name = name;
@@ -30,12 +42,6 @@ public class Location {
         this.restrictedTo = restrictedTo;
     }
 
-    public Location(String id, String name, int maximumCapacity) {
-        this.id = id;
-        this.name = name;
-        this.maximumCapacity = maximumCapacity;
-        this.restrictedTo = null;
-    }
     public String getId() {
         return id;
     }

@@ -1,0 +1,52 @@
+[
+  {
+    "location_id": "A1",
+    "person_id": "1",
+    "time": "12:30:31"
+  },
+  {
+    "location_id": "A1",
+    "person_id": "2",
+    "time": "12:30:35"
+  },
+  {
+    "location_id": "A3",
+    "person_id": "1",
+    "time": "13:30:40"
+  },
+  {
+    "location_id": "A2",
+    "person_id": "2",
+    "time": "12:40:31"
+  },
+  {
+    "location_id": "A3",
+    "person_id": "2",
+    "time": "13:35:31"
+  },
+  {
+    "location_id": "A4",
+    "person_id": "1",
+    "time": "13:55:31"
+  },
+  {
+    "location_id": "SA",
+    "person_id": "3",
+    "time": "12:00:00"
+  },
+  {
+    "location_id": "SA",
+    "person_id": "1",
+    "time": "12:05:00"
+  },
+  {
+    "location_id": "A1",
+    "person_id": "55",
+    "time": "12:30:31"
+  },
+  {
+    "location_id": "A2",
+    "person_id": "55",
+    "time": "15:50:55"
+  }
+]
