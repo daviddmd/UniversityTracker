@@ -134,6 +134,9 @@ public class FileHelper {
             eventJSON = eventsJSON.getJSONObject(i);
             locationId = eventJSON.getString("location_id");
             personId = eventJSON.getString("person_id");
+            if (locationId.equals("") || personId.equals("")) {
+                throw new IOException("Empty Person or Location ID found");
+            }
             timeString = eventJSON.getString("time");
             time = LocalTime.parse(timeString);
             location = getLocationById(locations, locationId);

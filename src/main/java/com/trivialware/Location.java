@@ -36,7 +36,6 @@ public class Location {
         this.maximumCapacity = maximumCapacity;
         this.restrictedTo = null;
     }
-
     public String getId() {
         return id;
     }

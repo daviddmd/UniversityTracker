@@ -17,6 +17,20 @@ public class Event implements Comparable<Event> {
      */
     private LocalTime endTime;
 
+    /**
+     * Construtor para a classe Evento.
+     * <p>
+     * Um evento ou movimento é composto pelo identificador único da pessoa responsável por o gerar, o objeto Pessoa
+     * correspondente a esse mesmo identifiador (se existir presentemente no sistema), a localização associada ao
+     * evento gerado, a hora de início do evento (quando o movimento foi registado) e a hora de fim do evento, que
+     * corresponde ao evento que imediatamente sucede este evento associado à pessoa que o gerou. Caso este seja o
+     * último evento temporalmente, a hora de fim irá assumir a hora máxima, que é 23:59:59.
+     *
+     * @param person Objeto pessoa associado ao evento gerado, se existente
+     * @param personId Identificador único associadao ao evento gerado
+     * @param location Objeto localização associado à localização do evento gerado
+     * @param startTime Hora de início do evento, associado à hora em que o movimento foi capturado
+     */
     public Event(Person person, String personId, Location location, LocalTime startTime) {
         this.person = person;
         this.personId = personId;
@@ -68,7 +82,7 @@ public class Event implements Comparable<Event> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Person: ").append(person == null ? "Desconhecido" : person.toString());
+        sb.append("Person: ").append(person == null ? String.format("Desconhecido (%s)", personId) : person.toString());
         sb.append(" Location: ").append(location.toString());
         sb.append(" Start Time: ").append(startTime);
         if (endTime != LocalTime.MAX) {
@@ -81,6 +95,25 @@ public class Event implements Comparable<Event> {
     @Override
     public int compareTo(Event o) {
         return startTime.compareTo(o.getStartTime());
+    }
+
+    /**
+     * Verifica se um Evento se sobrepõe a outro
+     * Um evento sobrepõe-se a outro, caso:
+     * <ul>
+     *     <li>O mesmo não seja igual ao evento a verificar</li>
+     *     <li>A localização do mesmo seja igual à do evento a verificar</li>
+     *     <li>A hora de início e fim do evento a verificar sobrepõe-se à hora de início e fim do próprio evento</li>
+     * </ul>
+     *
+     * @param event Evento a verificar sobreposição
+     * @return true se o mesmo se sobrepõe, false caso contrário
+     */
+    public boolean overlaps(Event event) {
+        //Overlap de datas/horas
+        //https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
+        return this != event && getLocation().equals(event.getLocation()) &&
+                (getStartTime().compareTo(event.getEndTime()) <= 0 && getEndTime().compareTo(event.getStartTime()) >= 0);
     }
 
 

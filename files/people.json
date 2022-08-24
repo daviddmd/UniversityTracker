@@ -13,5 +13,15 @@
     "id": "3",
     "name": "Rosa Soares",
     "role": "WORKER"
+  },
+  {
+    "id": "4",
+    "name": "João Silva",
+    "role": "STUDENT"
+  },
+  {
+    "id": "5",
+    "name": "Ricardo Ferreira",
+    "role": "STUDENT"
   }
 ]

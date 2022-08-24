@@ -26,7 +26,33 @@ public class University {
 
     private final UndirectedNetworkADT<Location> network;
 
-
+    /**
+     * Construtor para a classe Universidade. A classe universidade contém diversos métodos e funções para auxiliar
+     * as tarefas inerentes ás mesmas, e é construída através de uma lista de localizações, eventos (não necessariamente
+     * temporalmente organizados), pessoas e a rede (grafo pesado não dirigido) correspondente às relações entre as
+     * localizações. Apenas a lista das pessoas pode estar vazia, sendo que é esperado que a lista de localizações e
+     * eventos não esteja para um funcionamento lógico do programa.
+     * <p>
+     * No instanciamento desta classe, a lista interna dos eventos não será diretamente associada à lista de eventos
+     * recebida, sendo que a mesma será organizada temporalmente, e cada evento será adicionado à lista instanciada no
+     * construtor com o número exato de eventos recebidos para otimização espacial. Os eventos são organizados de modo
+     * a no momento da adição permitir definir a data de fim do anterior como a data de início do próximo (o evento
+     * a inserir), construindo uma linha cronológica de eventos associado a uma pessoa, que irá ser útil nas operações
+     * de rastreamento de pessoas.
+     * <p>
+     * Cada evento pode estar associado a uma pessoa que não foi importada, e a pessoa associada a esse evento irá
+     * aparecer como desconhecida, porém continuará a ser possível rastrear a mesma a partir do seu Identificador único.
+     * No momento da adição dessa pessoa ao sistema (se o identificador único for igual), todos os eventos serão associados
+     * a esta nova pessoa, deixando o seu modo de apresentação de ser "Desconhecido", estando associado ao nome da mesma.
+     * No momento da remoção da pessoa, o inverso irá acontecer, em que todos os eventos previamente associados a uma
+     * pessoa irão agora estar associados a uma pessoa desconhecida, sendo que o identificador da pessoa responsável
+     * por esse evento/movimento é preservado, continuando a ser possível o rastreamento da mesma.
+     *
+     * @param locations Lista de Localizações
+     * @param events    Lista de Eventos
+     * @param people    Lista de Pessoas
+     * @param network   Rede (Grafo Pesado não dirigido) associado às relações das localizações da universidade
+     */
     public University(UnorderedListADT<Location> locations, UnorderedListADT<Event> events, UnorderedListADT<Person> people, UndirectedNetworkADT<Location> network) {
         this.locations = locations;
         this.events = new ArrayList<>(events.size());
@@ -47,6 +73,84 @@ public class University {
         }
         this.people = people;
         this.network = network;
+        setNumberOfPeopleCurrentlyInLocations();
+    }
+
+    /**
+     * Atribui a cada localização o número de pessoas <strong>presentemente</strong>presentemente nela.
+     * Define-se como presentemente aquelas pessoas em cuja última atividade registada pelas mesmas
+     * estavam na localização em questão
+     */
+    public void setNumberOfPeopleCurrentlyInLocations() {
+        for (Location location : getLocations()) {
+            location.setCurrentNumberPeople(0);
+        }
+        Location location;
+        for (Event event : getEvents()) {
+            if (event.getEndTime() == LocalTime.MAX) {
+                location = event.getLocation();
+                location.setCurrentNumberPeople(location.getCurrentNumberPeople() + 1);
+            }
+        }
+    }
+
+    /**
+     * Atualiza o número de pessoas em cada localização num dado intervalo temporal
+     *
+     * @param start Hora de início
+     * @param end   Hora de fim
+     */
+    public void setNumberOfPeopleInLocationsInTimeFrame(LocalTime start, LocalTime end) {
+        for (Location location : getLocations()) {
+            location.setCurrentNumberPeople(0);
+        }
+        Location location;
+        for (Event event : getEvents()) {
+            if (start.compareTo(event.getEndTime()) <= 0 && end.compareTo(event.getStartTime()) >= 0) {
+                location = event.getLocation();
+                location.setCurrentNumberPeople(location.getCurrentNumberPeople() + 1);
+            }
+        }
+    }
+
+    /**
+     * Obtém os eventos temporalmente sobrepostos aos eventos numa lista de eventos.
+     * Um evento está sobreposto a outro, se o mesmo não for o próprio, se a localização do mesmo for igual à do próprio
+     * e se o seu início e fim se se sobrepuserem com o início e fim do próprio.
+     *
+     * @param personEvents Lista de eventos a encontrar sobreposições
+     * @return Lista de eventos sobrepostos aos eventos passados na lista de eventos por argumento
+     */
+    public ListADT<Event> getOverlappingEvents(ListADT<Event> personEvents) {
+        UnorderedListADT<Event> eventList = new DoublyLinkedList<>();
+        //O(n*m)
+        for (Event event : getEvents()) {
+            for (Event personEvent : personEvents) {
+                if (personEvent.overlaps(event)) {
+                    eventList.addLast(event);
+                }
+            }
+        }
+        return eventList;
+    }
+
+    /**
+     * Obtém os eventos (movimentos) de uma dada pessoa num intervalo temporal
+     *
+     * @param personId Identificador único de uma certa pessoa
+     * @param start    Hora de início do intervalo temporal (inclusive)
+     * @param end      Hora de fim do intervalo temporal (inclusive)
+     * @return Lista de movimentos de uma pessoa num intervalo temporal, contendo a hora de início e fim (se aplicável)
+     * associada a uma localização e pessoa correspondente (se existente no sistema), assim como o identificador da mesma
+     */
+    public ListADT<Event> getEventsOfPersonInTimeFrame(String personId, LocalTime start, LocalTime end) {
+        UnorderedListADT<Event> eventList = new DoublyLinkedList<>();
+        for (Event event : getEvents()) {
+            if (event.getPersonId().equals(personId) && (start.compareTo(event.getEndTime()) <= 0 && end.compareTo(event.getStartTime()) >= 0)) {
+                eventList.addLast(event);
+            }
+        }
+        return eventList;
     }
 
 
@@ -102,6 +206,14 @@ public class University {
         return true;
     }
 
+    /**
+     * Remove uma pessoa do sistema
+     *
+     * @param person Objeto que representa a pessoa a remover do sistema. É desassociada de todos os eventos a que está
+     *               associada se for removida com sucesso (o ID da pessoa continuará a estar associado ao evento,
+     *               mas a mesma irá aparecer como desconhecida).
+     * @return true se a pessoa existia e foi removida do sistema, false em caso contrário
+     */
     public boolean removePerson(Person person) {
         if (people.remove(person)) {
             removePersonFromEvents(person);
@@ -173,10 +285,20 @@ public class University {
         return people;
     }
 
+    /**
+     * Define a lista das pessoas do sistema
+     *
+     * @param people Lista das pessoas a substituir a lista presente
+     */
     public void setPeople(UnorderedListADT<Person> people) {
         this.people = people;
     }
 
+    /**
+     * Obtém a rede (grafo pesado não direcionado) das localizações do sistema
+     *
+     * @return Rede associado às relações das localizações do sistema
+     */
     public UndirectedNetworkADT<Location> getNetwork() {
         return network;
     }
@@ -194,7 +316,8 @@ public class University {
             events.addLast(event);
         }
         else {
-            currentEventByPerson.setEndTime(event.getStartTime());
+            //FIXME avaliar se é necessário o decremento
+            currentEventByPerson.setEndTime(event.getStartTime().minusSeconds(1));
             events.addLast(event);
         }
     }
