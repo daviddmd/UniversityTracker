@@ -20,6 +20,7 @@ public class Location {
     private String id;
     private String name;
     private int maximumCapacity;
+    private int currentNumberPeople;
     private Person.Role restrictedTo;
 
     public Location(String id, String name, int maximumCapacity, Person.Role restrictedTo) {
@@ -79,5 +80,13 @@ public class Location {
         if (o == null || getClass() != o.getClass()) return false;
         Location location = (Location) o;
         return id.equals(location.id);
+    }
+
+    public int getCurrentNumberPeople() {
+        return currentNumberPeople;
+    }
+
+    public void setCurrentNumberPeople(int currentNumberPeople) {
+        this.currentNumberPeople = currentNumberPeople;
     }
 }

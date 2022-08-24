@@ -129,8 +129,7 @@ public class FileHelper {
         Location location;
         Person person;
         LocalTime time;
-        int currentIndex = 0;
-        Event[] eventArray = new Event[eventsJSON.length()];
+        UnorderedListADT<Event> events = new ArrayList<>(eventsJSON.length());
         for (int i = 0; i < eventsJSON.length(); i++) {
             eventJSON = eventsJSON.getJSONObject(i);
             locationId = eventJSON.getString("location_id");
@@ -140,23 +139,11 @@ public class FileHelper {
             location = getLocationById(locations, locationId);
             person = getPersonById(people, personId);
             if (location != null) {
-                eventArray[currentIndex] = new Event(person, personId, location, time);
-                currentIndex += 1;
+                events.addLast(new Event(person, personId, location, time));
             }
             else {
                 throw new IOException("Invalid Location Found");
             }
-        }
-        /*
-        Após termos um array todas as Localizações no ficheiro, iremos organizar o mesmo a partir da sua data de
-        atividade e transferir os mesmos para uma lista não organizada. Iremos posteriormente usar esta mesma lista
-        para adicionar cada elemento 1 a 1 à lista da classe Universidade, onde a data de fim do evento irá ser
-        deduzida para cada evento de cada utilizador, incluindo os pseudo-anónimos.
-         */
-        ArraySorts.quickSort(eventArray);
-        UnorderedListADT<Event> events = new ArrayList<>(currentIndex);
-        for (int i = 0; i < eventArray.length; i++) {
-            events.addLast(eventArray[i]);
         }
         return events;
     }

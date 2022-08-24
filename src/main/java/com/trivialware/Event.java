@@ -67,12 +67,14 @@ public class Event implements Comparable<Event> {
 
     @Override
     public String toString() {
-        return "Event{" +
-                "person=" + person +
-                ", location=" + location +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Person: ").append(person == null ? "Desconhecido" : person.toString());
+        sb.append(" Location: ").append(location.toString());
+        sb.append(" Start Time: ").append(startTime);
+        if (endTime != LocalTime.MAX) {
+            sb.append(" End Time: ").append(endTime);
+        }
+        return sb.toString();
     }
 
 

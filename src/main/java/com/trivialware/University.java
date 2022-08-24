@@ -30,7 +30,19 @@ public class University {
     public University(UnorderedListADT<Location> locations, UnorderedListADT<Event> events, UnorderedListADT<Person> people, UndirectedNetworkADT<Location> network) {
         this.locations = locations;
         this.events = new ArrayList<>(events.size());
+        /*
+        Após termos um array todas as Localizações no ficheiro, iremos organizar o mesmo a partir da sua data de
+        atividade e transferir os mesmos para uma lista não organizada. Iremos posteriormente usar esta mesma lista
+        para adicionar cada elemento 1 a 1 à lista da classe Universidade, onde a data de fim do evento irá ser
+        deduzida para cada evento de cada utilizador, incluindo os pseudo-anónimos.
+         */
+        int currentIndex = 0;
+        Event[] eventArray = new Event[events.size()];
         for (Event event : events) {
+            eventArray[currentIndex++] = event;
+        }
+        ArraySorts.quickSort(eventArray);
+        for (Event event : eventArray) {
             addEvent(event);
         }
         this.people = people;
