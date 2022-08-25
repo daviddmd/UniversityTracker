@@ -63,14 +63,22 @@ class UniversityTest {
     @Test
     void addPerson() {
         Person person;
-        assertEquals(5, university.getPeople().size());
+        assertEquals(7, university.getPeople().size());
         person = new Person("2", Person.Role.STUDENT, "Repetido");
         assertFalse(university.addPerson(person));
-        assertEquals(5, university.getPeople().size());
-        person = new Person("6", Person.Role.STUDENT, "Mário Leigo");
+        assertEquals(7, university.getPeople().size());
+        person = new Person("8", Person.Role.STUDENT, "Mário Leigo");
         assertTrue(university.addPerson(person));
-        assertEquals(6, university.getPeople().size());
+        assertEquals(8, university.getPeople().size());
         assertEquals(person.getId(), university.getPeople().getLast().getId());
+        Event event = university.getCurrentEventByPerson("55");
+        assertNull(event.getPerson());
+        person = new Person("55", Person.Role.STUDENT, "Mário Existente");
+        assertTrue(university.addPerson(person));
+        assertEquals(9, university.getPeople().size());
+        assertNotNull(event.getPerson());
+        assertEquals(person, event.getPerson());
+        assertEquals("Mário Existente", event.getPerson().getName());
     }
 
     @Test
@@ -78,32 +86,46 @@ class UniversityTest {
         Person person;
         person = university.getPersonById("1");
         assertEquals("Carlos Sousa", person.getName());
-        assertEquals(5, university.getPeople().size());
+        assertEquals(7, university.getPeople().size());
         assertTrue(university.removePerson(person));
-        assertEquals(4, university.getPeople().size());
+        assertEquals(6, university.getPeople().size());
+        Event event = university.getCurrentEventByPerson("2");
+        assertNotNull(event.getPerson());
         person = new Person("2", Person.Role.STUDENT, "Pedro Santos");
         assertEquals(person, university.getPersonById("2"));
         assertTrue(university.removePerson(person));
-        assertEquals(3, university.getPeople().size());
+        assertNull(event.getPerson());
+        assertEquals(5, university.getPeople().size());
         person = new Person("11", Person.Role.OTHER, "Inês Istente");
         assertFalse(university.removePerson(person));
-        assertEquals(3, university.getPeople().size());
+        assertEquals(5, university.getPeople().size());
     }
 
     @Test
-    void getAccessViolations(){
-
+    void getAccessViolations() {
+        ListADT<Event> violations = university.getAccessViolations();
+        String[] expectedOrder = new String[]{"1", "55", "55", "7", "3", "5"};
+        int currentIndex = 0;
+        assertEquals(expectedOrder.length, violations.size());
+        for (Event violation : violations) {
+            assertEquals(expectedOrder[currentIndex++], violation.getPersonId());
+        }
     }
 
-
-    /*
     @Test
     void setNumberOfPeopleCurrentlyInLocations() {
+        university.setNumberOfPeopleCurrentlyInLocations();
+        assertEquals(3, university.getLocationById("A2").getCurrentNumberPeople());
+        assertEquals(1, university.getLocationById("A3").getCurrentNumberPeople());
+        assertEquals(1, university.getLocationById("A4").getCurrentNumberPeople());
+        assertEquals(1, university.getLocationById("SA").getCurrentNumberPeople());
+        assertEquals(2, university.getLocationById("G1").getCurrentNumberPeople());
     }
 
-    @Test
-    void setNumberOfPeopleInLocationsInTimeFrame() {
-    }
+    /*
+
+
+
 
     @Test
     void getOverlappingEvents() {

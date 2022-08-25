@@ -81,31 +81,19 @@ public class University {
      * estavam na localização em questão
      */
     public void setNumberOfPeopleCurrentlyInLocations() {
+        /*
+        Esta função, como a mesma com intervalo temporal em vez de atribuir um número poderia criar uma lista de Person
+        e atribuir essa lista em cada objeto Location com os IDs das pessoas (para incluir desconhecidos). Porém, esta
+        funcionalidade não é pedida, mas o modo de funcionamento seria idêntico, filtrar os eventos para eventos
+        entre um intervalo temporal ou cuja data de fim é indefinida ("atuais") e adicionar uma pessoa aos mesmos,
+        limpando sempre a lista no início do processo
+         */
         for (Location location : getLocations()) {
             location.setCurrentNumberPeople(0);
         }
         Location location;
         for (Event event : getEvents()) {
             if (event.getEndTime() == LocalTime.MAX) {
-                location = event.getLocation();
-                location.setCurrentNumberPeople(location.getCurrentNumberPeople() + 1);
-            }
-        }
-    }
-
-    /**
-     * Atualiza o número de pessoas em cada localização num dado intervalo temporal
-     *
-     * @param start Hora de início
-     * @param end   Hora de fim
-     */
-    public void setNumberOfPeopleInLocationsInTimeFrame(LocalTime start, LocalTime end) {
-        for (Location location : getLocations()) {
-            location.setCurrentNumberPeople(0);
-        }
-        Location location;
-        for (Event event : getEvents()) {
-            if (start.compareTo(event.getEndTime()) <= 0 && end.compareTo(event.getStartTime()) >= 0) {
                 location = event.getLocation();
                 location.setCurrentNumberPeople(location.getCurrentNumberPeople() + 1);
             }
@@ -163,8 +151,8 @@ public class University {
      * que a pessoa realizou nos vários movimentos efetuados em várias localizações da universidade.
      *
      * @param personId Identificador único da pessoa no sistema
-     * @param start Hora de início do intervalo temporal (inclusive)
-     * @param end Hora de fim do intervalo temporal (inclusive)
+     * @param start    Hora de início do intervalo temporal (inclusive)
+     * @param end      Hora de fim do intervalo temporal (inclusive)
      * @return Lista com Eventos (Contactos) efetuados pela pessoa num dado intervalo temporal
      */
     public ListADT<Event> getOverlappingEventsOfPersonInTimeFrame(String personId, LocalTime start, LocalTime end) {
@@ -177,9 +165,10 @@ public class University {
      * que uma pessoa registou num dado intervalo temporal. Faz uso da função
      * {@link #getEventsOfPersonInTimeFrame(String, LocalTime, LocalTime) getEventsOfPersonInTimeFrame} e retorna
      * o primeiro evento caso existam eventos nesse intervalo temporal, caso contrário não retorna nada.
+     *
      * @param personId Identificador único da pessoa no sistema
-     * @param start Hora de início do intervalo temporal (inclusive)
-     * @param end Hora de fim do intervalo temporal (inclusive)
+     * @param start    Hora de início do intervalo temporal (inclusive)
+     * @param end      Hora de fim do intervalo temporal (inclusive)
      * @return Primeira localização cronológica da pessoa num dado intervalo temporal, se existir
      */
     public Location getLocationOfPersonInTimeFrame(String personId, LocalTime start, LocalTime end) {
