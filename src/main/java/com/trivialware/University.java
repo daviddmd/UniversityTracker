@@ -73,6 +73,7 @@ public class University {
         }
         this.people = people;
         this.network = network;
+        setNumberOfPeopleCurrentlyInLocations();
     }
 
     /**
@@ -82,11 +83,10 @@ public class University {
      */
     public void setNumberOfPeopleCurrentlyInLocations() {
         /*
-        Esta função, como a mesma com intervalo temporal em vez de atribuir um número poderia criar uma lista de Person
-        e atribuir essa lista em cada objeto Location com os IDs das pessoas (para incluir desconhecidos). Porém, esta
-        funcionalidade não é pedida, mas o modo de funcionamento seria idêntico, filtrar os eventos para eventos
-        entre um intervalo temporal ou cuja data de fim é indefinida ("atuais") e adicionar uma pessoa aos mesmos,
-        limpando sempre a lista no início do processo
+        Esta função poderia criar uma lista de Person e atribuir essa lista em cada objeto Location com os IDs das
+        pessoas (para incluir desconhecidos). Porém, esta funcionalidade não é pedida, mas o modo de funcionamento
+        seria idêntico, filtrar os eventos para eventos entre um intervalo temporal ou cuja data de fim é indefinida
+        ("atuais") e adicionar uma pessoa aos mesmos, limpando sempre a lista no início do processo.
          */
         for (Location location : getLocations()) {
             location.setCurrentNumberPeople(0);
@@ -103,17 +103,19 @@ public class University {
     /**
      * Obtém os eventos temporalmente sobrepostos aos eventos numa lista de eventos.
      * Um evento está sobreposto a outro, se o mesmo não for o próprio, se a localização do mesmo for igual à do próprio
-     * e se o seu início e fim se se sobrepuserem com o início e fim do próprio.
+     * e se o seu início e fim se se sobrepuserem com o início e fim do próprio, e também se este mesmo evento,
+     * se sobreposto a um da pessoa em questão, está no próprio intervalo temporal imposto aos eventos da pessoa
      *
      * @param personEvents Lista de eventos a encontrar sobreposições
      * @return Lista de eventos sobrepostos aos eventos passados na lista de eventos por argumento
      */
-    public ListADT<Event> getOverlappingEvents(ListADT<Event> personEvents) {
+    public ListADT<Event> getOverlappingEventsInTimeFrame(ListADT<Event> personEvents, LocalTime start, LocalTime end) {
         UnorderedListADT<Event> eventList = new DoublyLinkedList<>();
         //O(n*m)
         for (Event event : getEvents()) {
             for (Event personEvent : personEvents) {
-                if (personEvent.overlaps(event)) {
+                if (personEvent.overlaps(event) &&
+                        (start.compareTo(event.getEndTime()) <= 0 && end.compareTo(event.getStartTime()) >= 0)) {
                     eventList.addLast(event);
                 }
             }
@@ -133,6 +135,13 @@ public class University {
      * associada a uma localização e pessoa correspondente (se existente no sistema), assim como o identificador da mesma
      */
     public ListADT<Event> getEventsOfPersonInTimeFrame(String personId, LocalTime start, LocalTime end) {
+        /*
+        Podia ter usado uma Queue para representar os eventos por ordem, porém, a função para verificar os eventos
+        que se sobrepõe aos eventos de uma pessoa num intervalo temporal necessita de percorrer estes mesmos eventos
+        tantas vezes quantos eventos houverem no sistema, portanto precisa de ser uma lista não ordenada (os eventos
+        na lista de eventos do sistema já estão ordenados pela sua data de início, portanto não é necessário o overhead
+        de verificação de ordenação adicional).
+         */
         UnorderedListADT<Event> eventList = new DoublyLinkedList<>();
         for (Event event : getEvents()) {
             if (event.getPersonId().equals(personId) && (start.compareTo(event.getEndTime()) <= 0 && end.compareTo(event.getStartTime()) >= 0)) {
@@ -146,7 +155,7 @@ public class University {
      * Obtém os contactos (eventos) de uma pessoa num dado intervalo temporal. Faz uso da função
      * {@link #getEventsOfPersonInTimeFrame(String, LocalTime, LocalTime) getEventsOfPersonInTimeFrame} para obter
      * todos os eventos de uma pessoa num dado intervalo temporal em conjunção com a função
-     * {@link #getOverlappingEvents(ListADT) getOverlappingEvents}
+     * {@link #getOverlappingEventsInTimeFrame(ListADT, LocalTime, LocalTime) getOverlappingEventsInTimeFrame}
      * para obter todos os eventos (contactos) que estão sobrepostos a estes mesmos eventos, determinando os contactos
      * que a pessoa realizou nos vários movimentos efetuados em várias localizações da universidade.
      *
@@ -157,7 +166,7 @@ public class University {
      */
     public ListADT<Event> getOverlappingEventsOfPersonInTimeFrame(String personId, LocalTime start, LocalTime end) {
         ListADT<Event> eventsOfPersonInTimeFrame = getEventsOfPersonInTimeFrame(personId, start, end);
-        return getOverlappingEvents(eventsOfPersonInTimeFrame);
+        return getOverlappingEventsInTimeFrame(eventsOfPersonInTimeFrame, start, end);
     }
 
     /**

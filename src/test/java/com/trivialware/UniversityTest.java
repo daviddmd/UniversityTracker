@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,6 +45,7 @@ class UniversityTest {
         }
     }
 
+    /*
     @Test
     void printStuff() {
         for (Event event : university.getEvents()) {
@@ -60,6 +62,7 @@ class UniversityTest {
         }
     }
 
+     */
     @Test
     void addPerson() {
         Person person;
@@ -114,7 +117,6 @@ class UniversityTest {
 
     @Test
     void setNumberOfPeopleCurrentlyInLocations() {
-        university.setNumberOfPeopleCurrentlyInLocations();
         assertEquals(3, university.getLocationById("A2").getCurrentNumberPeople());
         assertEquals(1, university.getLocationById("A3").getCurrentNumberPeople());
         assertEquals(1, university.getLocationById("A4").getCurrentNumberPeople());
@@ -122,30 +124,81 @@ class UniversityTest {
         assertEquals(2, university.getLocationById("G1").getCurrentNumberPeople());
     }
 
-    /*
-
-
-
-
     @Test
-    void getOverlappingEvents() {
+    void getEventsOfPersonInTimeFrame() {
+        ListADT<Event> events;
+        String[] expectedOrder;
+        int currentIndex;
+        expectedOrder = new String[]{"SA", "A1", "A3"};
+        currentIndex = 0;
+        events = university.getEventsOfPersonInTimeFrame("1", LocalTime.of(12, 0, 0), LocalTime.of(13, 55, 30));
+        for (Event event : events) {
+            assertEquals(expectedOrder[currentIndex++], event.getLocation().getId());
+        }
+        expectedOrder = new String[]{"SA", "A1", "A3", "A4"};
+        currentIndex = 0;
+        events = university.getEventsOfPersonInTimeFrame("1", LocalTime.of(12, 0, 0), LocalTime.of(13, 55, 31));
+        for (Event event : events) {
+            assertEquals(expectedOrder[currentIndex++], event.getLocation().getId());
+        }
+        expectedOrder = new String[]{"A1", "A3", "A4"};
+        currentIndex = 0;
+        events = university.getEventsOfPersonInTimeFrame("1", LocalTime.of(12, 30, 31), LocalTime.of(15, 55, 31));
+        for (Event event : events) {
+            assertEquals(expectedOrder[currentIndex++], event.getLocation().getId());
+        }
     }
 
     @Test
-    void getEventsOfPersonInTimeFrame() {
+    void getOverlappingEventsOfPersonInTimeFrame() {
+        String[] contactsAtTimeFrame;
+        ListADT<Event> overLappingEvents;
+        int currentIndex;
+        contactsAtTimeFrame = new String[]{"55", "6", "4"};
+        currentIndex = 0;
+        overLappingEvents = university.getOverlappingEventsOfPersonInTimeFrame("2", LocalTime.of(15, 50, 55), LocalTime.of(16, 30, 0));
+        assertEquals(contactsAtTimeFrame.length,overLappingEvents.size());
+        for (Event event : overLappingEvents) {
+            assertEquals(contactsAtTimeFrame[currentIndex++], event.getPersonId());
+        }
+
+        contactsAtTimeFrame = new String[]{"3","55","2","2"};
+        currentIndex = 0;
+        overLappingEvents = university.getOverlappingEventsOfPersonInTimeFrame("1", LocalTime.of(12, 0, 0), LocalTime.of(13, 55, 0));
+        assertEquals(contactsAtTimeFrame.length,overLappingEvents.size());
+        for (Event event : overLappingEvents) {
+            assertEquals(contactsAtTimeFrame[currentIndex++], event.getPersonId());
+        }
+
+        contactsAtTimeFrame = new String[]{"55", "4"};
+        currentIndex = 0;
+        overLappingEvents = university.getOverlappingEventsOfPersonInTimeFrame("2", LocalTime.of(18, 20, 10), LocalTime.MAX);
+        assertEquals(contactsAtTimeFrame.length,overLappingEvents.size());
+        for (Event event : overLappingEvents) {
+            System.out.println(event);
+            assertEquals(contactsAtTimeFrame[currentIndex++], event.getPersonId());
+        }
+
     }
 
     @Test
     void getCurrentEventByPerson() {
     }
 
-    @Test
-    void getNetwork() {
-    }
 
+
+
+    /*
     @Test
     void addEvent() {
     }
+
+    @Test
+    void emergencyTest() {
+    }
+
+
+
 
      */
 }
