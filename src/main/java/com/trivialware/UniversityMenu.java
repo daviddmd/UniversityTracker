@@ -205,12 +205,12 @@ public class UniversityMenu {
         }
     }
 
-    private void currentLocationAllPeopleMenu(){
+    private void currentLocationAllPeopleMenu() {
         Location location;
-        for (Person person : university.getPeople()){
+        for (Person person : university.getPeople()) {
             location = university.getCurrentLocationOfPerson(person.getId());
-            if (location!=null){
-                System.out.printf("Localização Atual %s: %s%n", person,location);
+            if (location != null) {
+                System.out.printf("Localização Atual %s: %s%n", person, location);
             }
         }
     }
@@ -291,11 +291,131 @@ public class UniversityMenu {
     }
 
     private void contactsMenu() {
+        String personId = getPersonIdMenu();
+        if (personId == null) {
+            return;
+        }
+        System.out.println("Introduza a Hora de Início (HH:MM:SS)");
+        LocalTime startTime = getTimeMenu();
+        System.out.println("Introduza a Hora de Fim (HH:MM:SS)");
+        LocalTime endTime = getTimeMenu();
+        ListADT<Event> events = university.getOverlappingEventsOfPersonInTimeFrame(personId, startTime, endTime);
+        UnorderedListADT<String> uniquePeople = new ArrayList<>(events.size());
+        if (events.isEmpty()) {
+            System.out.printf("A pessoa com identificador %s não teve contactos neste intervalo temporal.%n", personId);
+        }
+        else {
+            for (Event event : events) {
+                if (!uniquePeople.contains(event.getPersonId())) {
+                    uniquePeople.addLast(event.getPersonId());
+                }
+                if (event.getPerson() == null) {
+                    System.out.printf("| Hora: %s | Localização: %s | Identificador Pessoa Desconhecida: %s |%n",
+                            event.getStartTime(), event.getLocation(), event.getPersonId());
+                }
+                else {
+                    System.out.printf("| Hora: %s | Localização: %s | Pessoa: %s |%n",
+                            event.getStartTime(), event.getLocation(), event.getPerson());
+                }
+            }
+        }
+        Person person;
+        String separator = "";
+        StringBuilder sb = new StringBuilder();
+        for (String uniquePersonId : uniquePeople) {
+            sb.append(separator);
+            person = university.getPersonById(uniquePersonId);
+            if (person != null) {
+                sb.append(person);
+            }
+            else {
+                sb.append(String.format("Desconhecido (%s)", uniquePersonId));
+            }
+            separator = ",";
+        }
+        person = university.getPersonById(personId);
+        if (person == null) {
+            System.out.printf("A pessoa com identificador %s teve contacto com as pessoas %s%n", personId, sb);
+        }
+        else {
+            System.out.printf("%s teve contacto com as pessoas %s%n", person, sb);
+        }
+    }
 
+    private void emergencyForAllPeople() {
+        StackADT<Location> path;
+        double cost;
+        UndirectedNetworkADT<Location> network = university.getNetwork();
+        StringBuilder sb;
+        String separator;
+        for (Person person : university.getPeople()) {
+            path = new LinkedStack<>();
+            separator = "";
+            sb = new StringBuilder();
+            cost = network.getCheapestPath(university.getCurrentLocationOfPerson(person.getId()), university.getLocationById(University.EMERGENCY_SPOT_ID), path);
+            if (cost > 0) {
+                sb.append(ConsoleColors.GREEN).append(String.format("Percurso de Emergência para %s: ", person)).append(ConsoleColors.RESET);
+                while (!path.empty()) {
+                    sb.append(ConsoleColors.BLUE).append(separator).append(ConsoleColors.RESET);
+                    sb.append(path.pop());
+                    separator = "→";
+                }
+                sb.append(". ");
+                sb.append(ConsoleColors.GREEN).append("Distância: ").append(ConsoleColors.RESET).append(cost).append(" metros.");
+                System.out.println(sb);
+            }
+
+        }
+    }
+
+    private void emergencyForPerson(String personId) {
+        StackADT<Location> path;
+        double cost;
+        UndirectedNetworkADT<Location> network = university.getNetwork();
+        StringBuilder sb;
+        String separator;
+        path = new LinkedStack<>();
+        separator = "";
+        sb = new StringBuilder();
+        cost = network.getCheapestPath(university.getCurrentLocationOfPerson(personId), university.getLocationById(University.EMERGENCY_SPOT_ID), path);
+        if (cost > 0) {
+            sb.append(ConsoleColors.GREEN).append(String.format("Percurso de Emergência para Pessoa com Identificador %s: ", personId)).append(ConsoleColors.RESET);
+            while (!path.empty()) {
+                sb.append(ConsoleColors.BLUE).append(separator).append(ConsoleColors.RESET);
+                sb.append(path.pop());
+                separator = "→";
+            }
+            sb.append(". ");
+            sb.append(ConsoleColors.GREEN).append("Distância: ").append(ConsoleColors.RESET).append(cost).append(" metros.");
+            System.out.println(sb);
+        }
+        else {
+            System.out.printf("Não existe percurso de emergência para pessoa com identificador %s%n", personId);
+        }
     }
 
     private void emergencyMenu() {
-
+        int menuOption;
+        String personId;
+        do {
+            System.out.println("0-Voltar para o Menu Anterior");
+            System.out.println("1-Simular Emergência para Todas as Pessoas no Sistema");
+            System.out.println("2-Simular Emergência para uma Pessoa com o seu Identificador");
+            try {
+                System.out.print("Escolha: ");
+                menuOption = Integer.parseInt(scanner.nextLine());
+                switch (menuOption) {
+                    case 1 -> emergencyForAllPeople();
+                    case 2 -> {
+                        personId = getPersonIdMenu();
+                        emergencyForPerson(personId);
+                    }
+                }
+            }
+            catch (NumberFormatException e) {
+                menuOption = -1;
+            }
+        } while (menuOption != 0);
     }
 
     public void mainMenu() {
@@ -306,7 +426,7 @@ public class UniversityMenu {
             System.out.println("2-Obter Localização Pessoa");
             System.out.println("3-Ver Mensagens (Avisos/Alertas)");
             System.out.println("4-Consultar Contactos Efectuados por Pessoa");
-            System.out.println("5-Lançar Emergência");
+            System.out.println("5-Simular Emergência");
             try {
                 System.out.print("Escolha: ");
                 /*
