@@ -76,7 +76,7 @@ public class Location {
 
     @Override
     public String toString() {
-        return String.format("%s (%s)", getId(), getName());
+        return String.format("%s (%s)", getName(), getId());
     }
 
     @Override

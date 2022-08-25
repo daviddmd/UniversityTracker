@@ -33,5 +33,10 @@
         "role": "TEACHER",
         "name": "Rigoberto Campos",
         "id": "7"
+    },
+    {
+        "role": "TEACHER",
+        "name": "Fernando Pessoa",
+        "id": "9"
     }
 ]

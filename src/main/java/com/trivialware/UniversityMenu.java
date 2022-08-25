@@ -1,6 +1,8 @@
 package com.trivialware;
 
 import java.io.IOException;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class UniversityMenu {
@@ -15,30 +17,68 @@ public class UniversityMenu {
 
     private void listPeople() {
         for (Person person : university.getPeople()) {
-            System.out.printf("|ID: %s | Nome: %s | Papel: %s|%n", person.getId(), person.getName(), person.getRole());
+            System.out.printf("| ID: %s | Nome: %s | Papel: %s |%n", person.getId(), person.getName(), person.getRole());
         }
     }
 
     private void addPersonMenu() {
+        int roleChoice;
+        String id, name;
+        System.out.print("Nome: ");
+        name = scanner.nextLine();
+        System.out.print("Identificador Único: ");
+        id = scanner.nextLine();
 
+        do {
+            for (Person.Role role : Person.Role.values()) {
+                System.out.printf("%d - %s%n", role.ordinal(), role);
+            }
+            try {
+                System.out.print("Escolha: ");
+                roleChoice = Integer.parseInt(scanner.nextLine());
+            }
+            catch (NumberFormatException e) {
+                roleChoice = -1;
+            }
+        } while (roleChoice < 0 || roleChoice >= Person.Role.values().length);
+        if (!(name.isBlank() || id.isBlank())) {
+            Person person = new Person(id, Person.Role.values()[roleChoice], name);
+            if (!university.addPerson(person)) {
+                System.out.println("Já existe uma pessoa no sistema com o mesmo identificador.");
+            }
+            else {
+                System.out.printf("A pessoa com Identificador %s foi adicionada com sucesso ao sistema.%n", id);
+            }
+        }
     }
 
     private void removePersonMenu() {
+        String personId = getPersonIdMenu();
+        if (personId != null) {
+            Person person = university.getPersonById(personId);
+            if (person != null) {
+                if (university.removePerson(person)) {
+                    System.out.printf("A pessoa com identificador único %s foi removida do sistema.%n", person.getId());
+                }
+                else {
+                    System.out.println("Erro ao remover a pessoa do sistema.");
+                }
+            }
+            else {
+                System.out.println("Não existe uma pessoa com este identificador no sistema.");
+            }
+        }
 
     }
 
-    private Person getPersonByIdMenu() {
+    private String getPersonIdMenu() {
         System.out.println("Introduza o Identificador da Pessoa ou deixe em branco para cancelar a operação:");
         System.out.print("ID: ");
-        String id = scanner.nextLine();
-        if (id.isBlank()) {
+        String personId = scanner.nextLine();
+        if (personId.isBlank()) {
             return null;
         }
-        Person person = university.getPersonById(id);
-        if (person == null) {
-            System.out.println("Não existe uma pessoa no sistema com o identificador inserido.");
-        }
-        return person;
+        return personId;
     }
 
     private void peopleMenu() {
@@ -70,8 +110,127 @@ public class UniversityMenu {
         } while (menuOption != 0);
     }
 
-    private void peopleLocationMenu() {
+    private LocalTime getTimeMenu() {
+        LocalTime time = null;
+        String timeString;
+        do {
+            try {
+                System.out.print("Hora: ");
+                timeString = scanner.nextLine();
+                time = LocalTime.parse(timeString);
+            }
+            catch (DateTimeParseException | NullPointerException e) {
+                System.out.println("Hora Inserida Inválida.");
+            }
+        } while (time == null);
+        return time;
+    }
 
+    private void personCurrentLocationMenu() {
+        String personId = getPersonIdMenu();
+        if (personId != null) {
+            Location location = university.getCurrentLocationOfPerson(personId);
+            if (location != null) {
+                System.out.printf("Localização Atual: %s%n", location);
+            }
+            else {
+                System.out.println("A pessoa com o identificador inserido não tem movimentos registados.");
+            }
+        }
+
+    }
+
+    private void personFirstHistoricalLocationMenu() {
+        String personId = getPersonIdMenu();
+        if (personId != null) {
+            System.out.println("Introduza a Hora de Início (HH:MM:SS)");
+            LocalTime startTime = getTimeMenu();
+            System.out.println("Introduza a Hora de Fim (HH:MM:SS)");
+            LocalTime endTime = getTimeMenu();
+            if (endTime.compareTo(startTime) > 0) {
+                Location location = university.getFirstLocationOfPersonInTimeFrame(personId, startTime, endTime);
+                if (location != null) {
+                    System.out.printf("Localização Atual: %s%n", location);
+                }
+                else {
+                    System.out.println("A pessoa com o identificador inserido não tem movimentos registados.");
+                }
+            }
+            else {
+                System.out.println("A hora de início não pode ser superior à hora de fim");
+            }
+        }
+    }
+
+    private void personHistoricalMovementsMenu() {
+        String personId = getPersonIdMenu();
+        if (personId != null) {
+            System.out.println("Introduza a Hora de Início (HH:MM:SS)");
+            LocalTime startTime = getTimeMenu();
+            System.out.println("Introduza a Hora de Fim (HH:MM:SS)");
+            LocalTime endTime = getTimeMenu();
+            if (endTime.compareTo(startTime) > 0) {
+                ListADT<Event> events = university.getEventsOfPersonInTimeFrame(personId, startTime, endTime);
+                if (events.size() == 0) {
+                    System.out.println("A pessoa com o identificador inserido não tem movimentos registados.");
+                }
+                else {
+                    for (Event event : events) {
+                        System.out.printf("| Hora: %s | Localização: %s |%n",
+                                event.getStartTime(), event.getLocation());
+                    }
+                }
+            }
+            else {
+                System.out.println("A hora de início não pode ser superior à hora de fim.");
+            }
+        }
+    }
+
+    private void personAllMovementsMenu() {
+        String personId = getPersonIdMenu();
+        if (personId != null) {
+            ListADT<Event> events = university.getEventsOfPerson(personId);
+            if (events.isEmpty()) {
+                System.out.println("A pessoa com este identificador não tem movimentos registados");
+            }
+            else {
+                for (Event event : events) {
+                    System.out.printf("| Hora: %s | Localização: %s |%n",
+                            event.getStartTime(), event.getLocation());
+                }
+            }
+        }
+    }
+
+    private void peopleLocationMenu() {
+        if (university.getPeople().isEmpty()) {
+            System.out.println("Não existem pessoas no sistema, por favor, registe ou importe pessoas.");
+            return;
+        }
+        int menuOption;
+        do {
+            System.out.println("0-Voltar para o Menu Anterior");
+            System.out.println("1-Ver a Localização Atual de uma Pessoa");
+            System.out.println("2-Ver a Primeira Localização de uma Pessoa num Intervalo de Tempo");
+            System.out.println("3-Ver os Movimentos de uma Pessoa num Intervalo de Tempo");
+            System.out.println("4-Ver todos os Movimentos de uma Pessoa");
+            System.out.println("5-Listar todas as Pessoas no Sistema");
+            try {
+                System.out.print("Escolha: ");
+                menuOption = Integer.parseInt(scanner.nextLine());
+                switch (menuOption) {
+                    case 1 -> personCurrentLocationMenu();
+                    case 2 -> personFirstHistoricalLocationMenu();
+                    case 3 -> personHistoricalMovementsMenu();
+                    case 4 -> personAllMovementsMenu();
+                    case 5 -> listPeople();
+                }
+            }
+            catch (NumberFormatException e) {
+                menuOption = -1;
+            }
+        } while (menuOption != 0);
     }
 
     private void messageMenu() {

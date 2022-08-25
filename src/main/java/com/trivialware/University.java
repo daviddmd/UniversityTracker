@@ -152,6 +152,22 @@ public class University {
     }
 
     /**
+     * Obtém todos os eventos (movimentos) de uma pessoa registados.
+     *
+     * @param personId Identificador único da pessoa
+     * @return Lista de eventos/movimentos registados da pessoa
+     */
+    public ListADT<Event> getEventsOfPerson(String personId) {
+        UnorderedListADT<Event> eventList = new DoublyLinkedList<>();
+        for (Event event : getEvents()) {
+            if (event.getPersonId().equals(personId)) {
+                eventList.addLast(event);
+            }
+        }
+        return eventList;
+    }
+
+    /**
      * Obtém os contactos (eventos) de uma pessoa num dado intervalo temporal. Faz uso da função
      * {@link #getEventsOfPersonInTimeFrame(String, LocalTime, LocalTime) getEventsOfPersonInTimeFrame} para obter
      * todos os eventos de uma pessoa num dado intervalo temporal em conjunção com a função
@@ -180,13 +196,14 @@ public class University {
      * @param end      Hora de fim do intervalo temporal (inclusive)
      * @return Primeira localização cronológica da pessoa num dado intervalo temporal, se existir
      */
-    public Location getLocationOfPersonInTimeFrame(String personId, LocalTime start, LocalTime end) {
+    public Location getFirstLocationOfPersonInTimeFrame(String personId, LocalTime start, LocalTime end) {
         ListADT<Event> eventsOfPersonInTimeFrame = getEventsOfPersonInTimeFrame(personId, start, end);
         if (eventsOfPersonInTimeFrame.size() == 0) {
             return null;
         }
         return eventsOfPersonInTimeFrame.getFirst().getLocation();
     }
+
 
     /**
      * Obtém a última localização/localização atual de uma pessoa.
@@ -319,6 +336,7 @@ public class University {
      * @param people Lista das pessoas a substituir a lista presente
      */
     public void setPeople(UnorderedListADT<Person> people) {
+        this.people.clear();
         this.people = people;
     }
 
