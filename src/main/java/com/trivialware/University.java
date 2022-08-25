@@ -189,6 +189,20 @@ public class University {
     }
 
     /**
+     * Obtém a última localização/localização atual de uma pessoa.
+     * Usa a função {@link #getCurrentEventByPerson(String) getCurrentEventByPerson} para obter o último evento
+     * associado a esta pessoa, e posteriormente obtém a localização desse mesmo evento.
+     *
+     * @param personId Identificador único da pessoa no sistema
+     * @return Última localização da pessoa temporalmente, se esta pessoa tiver algum evento/movimento registado
+     */
+    public Location getCurrentLocationOfPerson(String personId) {
+        Event currentEvent = getCurrentEventByPerson(personId);
+        return currentEvent == null ? null : currentEvent.getLocation();
+    }
+
+
+    /**
      * Obtém uma localização no sistema a partir do seu identificador único, caso exista
      *
      * @param locationId Identificador único de uma localização na Universidade
@@ -330,7 +344,6 @@ public class University {
             events.addLast(event);
         }
         else {
-            //FIXME avaliar se é necessário o decremento
             currentEventByPerson.setEndTime(event.getStartTime().minusSeconds(1));
             events.addLast(event);
         }
@@ -416,5 +429,11 @@ public class University {
             }
         }
         return violations;
+    }
+
+    public StackADT<Location> getShortestPathToEmergencyPerson(String personId) {
+        StackADT<Location> stack = new LinkedStack<>();
+        network.getCheapestPath(getCurrentLocationOfPerson(personId), getLocationById(EMERGENCY_SPOT_ID), stack);
+        return stack;
     }
 }

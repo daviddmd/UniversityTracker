@@ -29,7 +29,7 @@ public class FileHelper {
     }
 
     public static UnorderedListADT<Location> importLocations(String fileName) throws IOException {
-        FileReader fr = new FileReader(fileName, StandardCharsets.UTF_8);
+        FileReader fr = new FileReader(fileName);
         JSONTokener tokener = new JSONTokener(fr);
         JSONObject object = new JSONObject(tokener);
         JSONArray locationsJSON = object.getJSONArray("locations");
@@ -52,7 +52,7 @@ public class FileHelper {
     //No processo de adição ou importação de pessoas, atualizar campo de pessoa no objeto evento se o mesmo for null e se
     //id for correspondente
     public static UnorderedListADT<Person> importPeople(String fileName) throws IOException {
-        FileReader fr = new FileReader(fileName, StandardCharsets.UTF_8);
+        FileReader fr = new FileReader(fileName);
         JSONTokener tokener = new JSONTokener(fr);
         JSONArray peopleJSON = new JSONArray(tokener);
         JSONObject personJSON;
@@ -80,7 +80,7 @@ public class FileHelper {
             peopleJSON.put(personJSON);
         }
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(fileName), StandardCharsets.UTF_8))) {
+                new FileOutputStream(fileName)))) {
             writer.write(peopleJSON.toString(4));
         }
     }
@@ -90,7 +90,7 @@ public class FileHelper {
         for (Location location : locations) {
             network.addVertex(location);
         }
-        FileReader fr = new FileReader(fileName, StandardCharsets.UTF_8);
+        FileReader fr = new FileReader(fileName);
         JSONTokener tokener = new JSONTokener(fr);
         JSONObject object = new JSONObject(tokener);
         JSONArray relationshipsJSON = object.getJSONArray("relationships");
@@ -121,7 +121,7 @@ public class FileHelper {
      * @return Lista com todos os Movimentos ocorridos no ficheiro
      */
     public static UnorderedListADT<Event> importEvents(ListADT<Person> people, ListADT<Location> locations, String fileName) throws IOException {
-        FileReader fr = new FileReader(fileName, StandardCharsets.UTF_8);
+        FileReader fr = new FileReader(fileName);
         JSONTokener tokener = new JSONTokener(fr);
         JSONArray eventsJSON = new JSONArray(tokener);
         JSONObject eventJSON;

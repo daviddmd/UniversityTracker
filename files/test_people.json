@@ -1,37 +1,37 @@
 [
-  {
-    "id": "1",
-    "name": "Carlos Sousa",
-    "role": "STUDENT"
-  },
-  {
-    "id": "2",
-    "name": "Pedro Santos",
-    "role": "STUDENT"
-  },
-  {
-    "id": "3",
-    "name": "Rosa Soares",
-    "role": "WORKER"
-  },
-  {
-    "id": "4",
-    "name": "João Silva",
-    "role": "STUDENT"
-  },
-  {
-    "id": "5",
-    "name": "Ricardo Ferreira",
-    "role": "STUDENT"
-  },
-  {
-    "id": "6",
-    "name": "Rita Pacheco",
-    "role": "STUDENT"
-  },
-  {
-    "id": "7",
-    "name": "Rigoberto Campos",
-    "role": "TEACHER"
-  }
+    {
+        "role": "STUDENT",
+        "name": "Carlos Sousa",
+        "id": "1"
+    },
+    {
+        "role": "STUDENT",
+        "name": "Pedro Santos",
+        "id": "2"
+    },
+    {
+        "role": "WORKER",
+        "name": "Rosa Soares",
+        "id": "3"
+    },
+    {
+        "role": "STUDENT",
+        "name": "João Silva",
+        "id": "4"
+    },
+    {
+        "role": "STUDENT",
+        "name": "Ricardo Ferreira",
+        "id": "5"
+    },
+    {
+        "role": "STUDENT",
+        "name": "Rita Pacheco",
+        "id": "6"
+    },
+    {
+        "role": "TEACHER",
+        "name": "Rigoberto Campos",
+        "id": "7"
+    }
 ]

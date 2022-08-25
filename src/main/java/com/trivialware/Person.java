@@ -26,10 +26,10 @@ public class Person {
         @Override
         public String toString() {
             return switch (this) {
-                case STUDENT -> "Student";
-                case TEACHER -> "Teacher";
-                case WORKER -> "Worker";
-                case OTHER -> "Other";
+                case STUDENT -> "Aluno";
+                case TEACHER -> "Docente";
+                case WORKER -> "Funcionário";
+                case OTHER -> "Outro";
             };
         }
 

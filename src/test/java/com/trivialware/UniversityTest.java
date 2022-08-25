@@ -45,24 +45,6 @@ class UniversityTest {
         }
     }
 
-    /*
-    @Test
-    void printStuff() {
-        for (Event event : university.getEvents()) {
-            System.out.println(event);
-        }
-        ListADT<Event> events = university.getEventsOfPersonInTimeFrame("1", LocalTime.of(12, 0), LocalTime.of(13, 50));
-        for (Event event : events) {
-            System.out.println(event.getLocation());
-        }
-        System.out.println("----");
-        ListADT<Event> overlappingEvents = university.getOverlappingEvents(events);
-        for (Event event : overlappingEvents) {
-            System.out.println(event);
-        }
-    }
-
-     */
     @Test
     void addPerson() {
         Person person;
@@ -157,15 +139,15 @@ class UniversityTest {
         contactsAtTimeFrame = new String[]{"55", "6", "4"};
         currentIndex = 0;
         overLappingEvents = university.getOverlappingEventsOfPersonInTimeFrame("2", LocalTime.of(15, 50, 55), LocalTime.of(16, 30, 0));
-        assertEquals(contactsAtTimeFrame.length,overLappingEvents.size());
+        assertEquals(contactsAtTimeFrame.length, overLappingEvents.size());
         for (Event event : overLappingEvents) {
             assertEquals(contactsAtTimeFrame[currentIndex++], event.getPersonId());
         }
 
-        contactsAtTimeFrame = new String[]{"3","55","2","2"};
+        contactsAtTimeFrame = new String[]{"3", "55", "2", "2"};
         currentIndex = 0;
         overLappingEvents = university.getOverlappingEventsOfPersonInTimeFrame("1", LocalTime.of(12, 0, 0), LocalTime.of(13, 55, 0));
-        assertEquals(contactsAtTimeFrame.length,overLappingEvents.size());
+        assertEquals(contactsAtTimeFrame.length, overLappingEvents.size());
         for (Event event : overLappingEvents) {
             assertEquals(contactsAtTimeFrame[currentIndex++], event.getPersonId());
         }
@@ -173,32 +155,35 @@ class UniversityTest {
         contactsAtTimeFrame = new String[]{"55", "4"};
         currentIndex = 0;
         overLappingEvents = university.getOverlappingEventsOfPersonInTimeFrame("2", LocalTime.of(18, 20, 10), LocalTime.MAX);
-        assertEquals(contactsAtTimeFrame.length,overLappingEvents.size());
+        assertEquals(contactsAtTimeFrame.length, overLappingEvents.size());
         for (Event event : overLappingEvents) {
-            System.out.println(event);
             assertEquals(contactsAtTimeFrame[currentIndex++], event.getPersonId());
         }
 
     }
 
     @Test
-    void getCurrentEventByPerson() {
-    }
-
-
-
-
-    /*
-    @Test
-    void addEvent() {
+    void getCurrentLocationOfPerson() {
+        assertEquals("G1", university.getCurrentLocationOfPerson("5").getId());
+        assertEquals("G1", university.getCurrentLocationOfPerson("3").getId());
+        assertEquals("SA", university.getCurrentLocationOfPerson("7").getId());
+        assertEquals("A3", university.getCurrentLocationOfPerson("6").getId());
+        assertEquals("A2", university.getCurrentLocationOfPerson("4").getId());
+        assertEquals("A2", university.getCurrentLocationOfPerson("2").getId());
+        assertEquals("A2", university.getCurrentLocationOfPerson("55").getId());
     }
 
     @Test
     void emergencyTest() {
+        StackADT<Location> pathToEmergency;
+        String[] expectedLocations;
+        int currentIndex;
+        expectedLocations = new String[]{"A4", "A3", "A2", "A1", "SA", "EMERGENCY_SPOT"};
+        currentIndex = 0;
+        pathToEmergency = university.getShortestPathToEmergencyPerson("1");
+        assertEquals(expectedLocations.length, pathToEmergency.size());
+        while (!pathToEmergency.empty()) {
+            assertEquals(expectedLocations[currentIndex++], pathToEmergency.pop().getId());
+        }
     }
-
-
-
-
-     */
 }
