@@ -1,5 +1,7 @@
 package com.trivialware;
 
+import com.trivialware.helpers.ConsoleColors;
+
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
@@ -203,6 +205,16 @@ public class UniversityMenu {
         }
     }
 
+    private void currentLocationAllPeopleMenu(){
+        Location location;
+        for (Person person : university.getPeople()){
+            location = university.getCurrentLocationOfPerson(person.getId());
+            if (location!=null){
+                System.out.printf("Localização Atual %s: %s%n", person,location);
+            }
+        }
+    }
+
     private void peopleLocationMenu() {
         if (university.getPeople().isEmpty()) {
             System.out.println("Não existem pessoas no sistema, por favor, registe ou importe pessoas.");
@@ -212,19 +224,21 @@ public class UniversityMenu {
         do {
             System.out.println("0-Voltar para o Menu Anterior");
             System.out.println("1-Ver a Localização Atual de uma Pessoa");
-            System.out.println("2-Ver a Primeira Localização de uma Pessoa num Intervalo de Tempo");
-            System.out.println("3-Ver os Movimentos de uma Pessoa num Intervalo de Tempo");
-            System.out.println("4-Ver todos os Movimentos de uma Pessoa");
-            System.out.println("5-Listar todas as Pessoas no Sistema");
+            System.out.println("2-Ver a Localização Atual de Todas as Pessoas");
+            System.out.println("3-Ver a Primeira Localização de uma Pessoa num Intervalo de Tempo");
+            System.out.println("4-Ver os Movimentos de uma Pessoa num Intervalo de Tempo");
+            System.out.println("5-Ver todos os Movimentos de uma Pessoa");
+            System.out.println("6-Listar todas as Pessoas no Sistema");
             try {
                 System.out.print("Escolha: ");
                 menuOption = Integer.parseInt(scanner.nextLine());
                 switch (menuOption) {
                     case 1 -> personCurrentLocationMenu();
-                    case 2 -> personFirstHistoricalLocationMenu();
-                    case 3 -> personHistoricalMovementsMenu();
-                    case 4 -> personAllMovementsMenu();
-                    case 5 -> listPeople();
+                    case 2 -> currentLocationAllPeopleMenu();
+                    case 3 -> personFirstHistoricalLocationMenu();
+                    case 4 -> personHistoricalMovementsMenu();
+                    case 5 -> personAllMovementsMenu();
+                    case 6 -> listPeople();
                 }
             }
             catch (NumberFormatException e) {
@@ -234,7 +248,46 @@ public class UniversityMenu {
     }
 
     private void messageMenu() {
-
+        for (Event event : university.getAccessViolations()) {
+            //Pessoa Desconhecida
+            if (event.getPerson() == null) {
+                System.out.println(ConsoleColors.RED + "[Alerta Pessoa Desconhecida]:" + ConsoleColors.RESET +
+                        " | ID Pessoa: " + event.getPersonId() + " | Hora: " +
+                        event.getStartTime() + " | Localização: " + event.getLocation() + " |");
+            }
+            //Violação Controlo Acesso de Role
+            else {
+                System.out.println(ConsoleColors.YELLOW + "[Aviso Entrada Sem Permissão]" + ConsoleColors.RESET +
+                        " | ID Pessoa: " + event.getPersonId() +
+                        " | Nome Pessoa: " + event.getPerson().getName() +
+                        " | Papel Pessoa: " + event.getPerson().getRole() +
+                        " | Hora: " + event.getStartTime() +
+                        " | Localização: " + event.getLocation() +
+                        " | Papel Acesso Localização: " + event.getLocation().getRestrictedTo() +
+                        " |"
+                );
+            }
+        }
+        int currentNumberPeople, maximumCapacity;
+        for (Location location : university.getLocations()) {
+            currentNumberPeople = location.getCurrentNumberPeople();
+            maximumCapacity = location.getMaximumCapacity();
+            //Se está entre capacidade máxima -1 e capacidade máxima
+            if (currentNumberPeople >= maximumCapacity - 2 && currentNumberPeople <= maximumCapacity) {
+                System.out.println(ConsoleColors.YELLOW + "[Aviso Capacidade Divisão Próxima de Ser Ultrapassada]:" + ConsoleColors.RESET +
+                        " | Divisão: " + location +
+                        " | Capacidade Máxima: " + maximumCapacity +
+                        " | Ocupação Atual: " + currentNumberPeople + " |"
+                );
+            }
+            else if (currentNumberPeople > maximumCapacity) {
+                System.out.println(ConsoleColors.RED + "[Alerta Capacidade Divisão Ultrapassada]:" + ConsoleColors.RESET +
+                        " | Divisão: " + location +
+                        " | Capacidade Máxima: " + maximumCapacity +
+                        " | Ocupação Atual: " + currentNumberPeople + " |"
+                );
+            }
+        }
     }
 
     private void contactsMenu() {
