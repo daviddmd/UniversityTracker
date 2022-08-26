@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 public class Main {
+
     public static void main(String[] args) {
 
         try (InputStream input = Main.class.getClassLoader().getResourceAsStream("config.properties")) {

@@ -77,7 +77,7 @@ public class University {
     }
 
     /**
-     * Atribui a cada localização o número de pessoas <strong>presentemente</strong>presentemente nela.
+     * Atribui a cada localização o número de pessoas <strong>presentemente</strong> nela.
      * Define-se como presentemente aquelas pessoas em cuja última atividade registada pelas mesmas
      * estavam na localização em questão
      */
@@ -449,6 +449,15 @@ public class University {
         return violations;
     }
 
+    /**
+     * Retorna uma pilha de localizações da localização atual da pessoa até ao ponto de emergência. Não irá ser usado
+     * no contexto do programa em si, visto que não retorna a distância, serve apenas para testar o comportamento
+     * correto do caminho mais curto na rede gerada pelo mapa da Universidade.
+     *
+     * @param personId Identificador único da pessoa a gerar o caminho mais curto até ao ponto de emergência
+     * @return Pilha de Localizações que representa o caminho mais curto (em termos de distância/custo) no contexto
+     * do grafo pesado não direcionado que representa a universidade
+     */
     public StackADT<Location> getShortestPathToEmergencyPerson(String personId) {
         StackADT<Location> stack = new LinkedStack<>();
         network.getCheapestPath(getCurrentLocationOfPerson(personId), getLocationById(EMERGENCY_SPOT_ID), stack);

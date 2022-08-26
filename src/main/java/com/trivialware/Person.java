@@ -1,16 +1,30 @@
 package com.trivialware;
 
+/**
+ * Classe que representa uma pessoa da Universidade existente no Sistema, composto pelo identificador único da mesma,
+ * nome e papel na universidade (Docente, Aluno, Funcionário ou Outro).
+ */
 public class Person {
     private String id;
     private Role role;
     private String name;
 
+    /**
+     * Representação de uma Pessoa existente no sistema.
+     *
+     * @param id   Identificador único da pessoa
+     * @param role Papel da pessoa na universidade
+     * @param name Nome da Pessoa
+     */
     public Person(String id, Role role, String name) {
         this.id = id;
         this.role = role;
         this.name = name;
     }
 
+    /**
+     * Papéis possíveis para uma Pessoa no Sistema.
+     */
 
     enum Role {
         STUDENT,
@@ -28,8 +42,17 @@ public class Person {
             };
         }
 
+        /**
+         * Função para converter o papel de uma String para Objeto. Útil no processo de importação de pessoas
+         * de ficheiro para objetos ou para atribuição do nível de autorização necessário para aceder a uma localização
+         * (pode ser vazio caso não seja necessária nenhuma autorização em especial para acesso), devolvendo um objeto
+         * enumerável nulo.
+         *
+         * @param role Representação textual do papel da pessoa
+         * @return Objeto enumerável correspondente ao papel, null caso seja uma string vazia (não tem role)
+         */
         static Role fromString(String role) {
-            return switch (role) {
+            return switch (role.toUpperCase()) {
                 case "STUDENT" -> STUDENT;
                 case "TEACHER" -> TEACHER;
                 case "WORKER" -> WORKER;
@@ -38,6 +61,13 @@ public class Person {
             };
         }
 
+        /**
+         * Função para converter um objeto enumerável que represente um papel em string, útil para exportação dos campos
+         * de papel/papel necessário para acesso de uma pessoa ou localização respetivamente para ficheiro.
+         *
+         * @param role Representação em objeto do Papel de uma Pessoa/Localização
+         * @return Representação textual do Papel de uma Pessoa/Localização
+         */
         static String fromRole(Role role) {
             return switch (role) {
                 case STUDENT -> "STUDENT";

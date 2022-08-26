@@ -3,15 +3,27 @@ package com.trivialware;
 import com.trivialware.helpers.ConsoleColors;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
+/**
+ * Classe que possibilita a interação por terminal com uma instância do Objeto Universidade com um método público
+ * para o menu inicial.
+ */
 public class UniversityMenu {
     private final University university;
     private final String peopleFileName;
     private final Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Construtor para a classe de Menu da Universidade, que recebe um Objeto Universidade, e o caminho do ficheiro
+     * das pessoas, caso seja necessário realizar operações de importação/exportação de pessoas.
+     *
+     * @param university     Objeto que representa a universidade
+     * @param peopleFileName Caminho do ficheiro das pessoas
+     */
     public UniversityMenu(University university, String peopleFileName) {
         this.university = university;
         this.peopleFileName = peopleFileName;
@@ -96,7 +108,10 @@ public class UniversityMenu {
                 System.out.print("Escolha: ");
                 menuOption = Integer.parseInt(scanner.nextLine());
                 switch (menuOption) {
-                    case 1 -> university.setPeople(FileHelper.importPeople(peopleFileName));
+                    case 1 -> {
+                        university.setPeople(FileHelper.importPeople(peopleFileName));
+                        university.updateEventsPeople();
+                    }
                     case 2 -> FileHelper.exportPeople(university.getPeople(), peopleFileName);
                     case 3 -> listPeople();
                     case 4 -> addPersonMenu();
@@ -488,6 +503,67 @@ public class UniversityMenu {
 
     }
 
+    /**
+     * Menu principal da aplicação. Permite aceder aos sub-menus de:
+     * <ul>
+     *     <li>Gerir Pessoas:
+     *     <ul>
+     *         <li>Importar Pessoas de um ficheiro para o sistema corrente</li>
+     *         <li>Exportar Pessoas do sistema corrente para o ficheiro definido</li>
+     *         <li>Listar as Pessoas no Sistema</li>
+     *         <li>Adicionar uma Pessoa ao Sistema, com o seu respetivo identificador único, nome e papel</li>
+     *         <li>Remover uma Pessoa Existente no sistema a partir do seu identificador único</li>
+     *     </ul>
+     *     A localização dos ficheiros de mapa, pessoas e movimentos é definida em
+     *     <pre>{@code resources/config.properties}</pre>
+     *     </li>
+     *     <li>Obter a Localização de Pessoas:
+     *     <ul>
+     *         <li>Ver a Localização Atual de uma Pessoa (associada ao seu último movimento registado)</li>
+     *         <li>Ver a primeira Localização de uma Pessoa num Intervalo de Tempo</li>
+     *         <li>Ver todos os movimentos (localização e hora) de uma Pessoa num Intervalo de Tempo</li>
+     *         <li>Ver todos os movimentos registados de uma Pessoa</li>
+     *     </ul>
+     *     Em todos estes menus as pessoas são identificadas pelo seu identificador único, possibilitando obter
+     *     informações sobre pessoas com movimentos registados, mas cuja identidade ainda não é conhecida pelo sistema.
+     *     </li>
+     *     <li>Ver Mensagens como Avisos ou Alertas, sendo que o tipo de mensagens poderão ser alertas de pessoas não
+     *     identificadas, avisos em relação a acessos de pessoas em localizações que as mesmas não têm permissão para
+     *     aceder devido ao seu papel relativo ao papel necessário para aceder a essa mesma localização ou
+     *     avisos/alertas pertinentes à capacidade máxima em relação à ocupação atual de cada localização, se a mesma
+     *     estiver perto ou tiver sido ultrapassada.</li>
+     *     <li>Consultar Contactos Efectuados por Pessoa:
+     *     <ul>
+     *         <li>Apresentar Contactos realizados por uma pessoa num intervalo temporal</li>
+     *         <li>Apresentar todos os Contactos realizados por uma pessoa no dia</li>
+     *         <li>Apresentar todos os contactos realizados por uma pessoa, dede o último movimento registado
+     *          até um número definido de horas no passado</li>
+     *     </ul>
+     *     Todos os contactos apresentados irão apresentar a lista de eventos pertinente (Quem realizou os contactos, e
+     *     quando/onde foi registado o movimento que gerou o contacto em questão), e a lista única de pessoas com que a
+     *     pessoa em questão entrou em contacto no período definido.
+     *     </li>
+     *     <li>
+     *         Simular Emergência:
+     *         <ul>
+     *             <li>Simular Emergência para Todas as Pessoas no Sistema, construindo o caminho mais próximo/menos
+     *             custo em termos de distância de todas as pessoas registadas no sistema até ao ponto de emergência,
+     *             ignorando as restrições de acesso associadas a cada localização.</li>
+     *             <li>Simular Emergência para uma Pessoa a partir do seu identificador único, permitindo simular
+     *             emergências para pessoas que ainda não estejam registadas, porém tenham eventos associados às
+     *             mesmas, obtendo a localização do evento mais recente, e construindo o caminho mais próximo/com
+     *             menor custo em termos de distância até ao pontode emergência, ignorando restrições de acesso.</li>
+     *         </ul>
+     *         Em cada um destes, será apresentado o caminho, representado pela ordem das localizações que cada pessoa
+     *         deve percorrer para chegar à saída de emergência, juntamente com a distância total desse mesmo caminho.
+     *         Se não for possível uma pessoa chegar a uma emergência (provavelmente devido à localização onde se situa
+     *         não se ligar a mais nenhuma localização), o sistema irá reportar que não existe um caminho para o ponto
+     *         de emergência para essa pessoa.
+     *     </li>
+     *     <li>Ver Mapa da Universidade, onde o utilizador poderá ver cada localização da universidade, juntamente
+     *     com as ligações que esse ponto realiza com outras localizações.</li>
+     * </ul>
+     */
     public void mainMenu() {
         int menuOption;
         do {

@@ -5,8 +5,11 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
+
+/**
+ * Classe que contém todos os métodos estáticos auxiliares para lidar com ficheiros
+ */
 
 public class FileHelper {
 
@@ -28,6 +31,13 @@ public class FileHelper {
         return null;
     }
 
+    /**
+     * Método para importar localizações do ficheiro JSON de localizações para uma Lista não ordenada de localizações
+     *
+     * @param fileName Caminho do ficheiro de Localizações
+     * @return Lista não ordenada de Localizações
+     * @throws IOException Caso o ficheiro não exista ou exista um erro de JSON no ficheiro
+     */
     public static UnorderedListADT<Location> importLocations(String fileName) throws IOException {
         FileReader fr = new FileReader(fileName);
         JSONTokener tokener = new JSONTokener(fr);
@@ -49,8 +59,13 @@ public class FileHelper {
         return locations;
     }
 
-    //No processo de adição ou importação de pessoas, atualizar campo de pessoa no objeto evento se o mesmo for null e se
-    //id for correspondente
+    /**
+     * Método para importar Pessoas do ficheiro JSON de Pessoas (caso exista) para uma Lista não ordenada de Pessoas
+     *
+     * @param fileName Caminho do ficheiro de Pessoas
+     * @return Lista não ordenada de Pessoas
+     * @throws IOException Caso o ficheiro não exista ou exista um erro de JSON no ficheiro
+     */
     public static UnorderedListADT<Person> importPeople(String fileName) throws IOException {
         FileReader fr = new FileReader(fileName);
         JSONTokener tokener = new JSONTokener(fr);
@@ -69,6 +84,13 @@ public class FileHelper {
         return people;
     }
 
+    /**
+     * Método para exportar Pessoas do sistema para um Ficheiro JSON
+     *
+     * @param peopleList Lista não Ordenada com todos os Objetos de Pessoas do Sistema
+     * @param fileName   Caminho do ficheiro das pessoas
+     * @throws IOException Caso o ficheiro não exista
+     */
     public static void exportPeople(UnorderedListADT<Person> peopleList, String fileName) throws IOException {
         JSONArray peopleJSON = new JSONArray();
         JSONObject personJSON;
@@ -85,6 +107,17 @@ public class FileHelper {
         }
     }
 
+    /**
+     * Constrói a rede associado a todas as localizações importadas e a todas as relações entre as localizações
+     * no ficheiro JSON que representa o mapa da Universidade
+     *
+     * @param locations Lista não ordenada com as localizações importadas
+     * @param fileName  Ficheiro JSON que contém o mapa das localizações, contendo a lista de localizações e especialmente
+     *                  as relações entre cada localização, como a origem, destino e peso (distância em metros)
+     * @return Objeto que representa o grafo pesado (rede) não direcionado representando as localizações e respetivas
+     * localizações da universidade
+     * @throws IOException Caso o ficheiro JSON de mapa não exista ou exista um erro de sintaxe JSON no mesmo
+     */
     public static UndirectedNetworkADT<Location> buildNetwork(ListADT<Location> locations, String fileName) throws IOException {
         UndirectedNetworkADT<Location> network = new AdjacencyListUndirectedNetwork<>();
         for (Location location : locations) {

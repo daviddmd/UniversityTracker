@@ -16,12 +16,18 @@ import java.util.Objects;
  * será o menor caminho até à saída mais próxima (sendo que saídas que não se encontram no edifício irão ter uma distância
  * de infinito, caso não se estivesse a usar um ponto central de emergência).
  */
+
+/**
+ * Classe que representa uma Localização da Universidade, composta pelo seu identificador único, nome, capacidade
+ * máxima e papel de utilizador a que esta localização está restrita. Após todos os eventos serem importados
+ * tem também o número de pessoas que presentemente a ocupam.
+ */
 public class Location {
-    private String id;
-    private String name;
-    private int maximumCapacity;
+    private final String id;
+    private final String name;
+    private final int maximumCapacity;
     private int currentNumberPeople;
-    private Person.Role restrictedTo;
+    private final Person.Role restrictedTo;
 
     /**
      * Construtor para classe que representa a localização a adicionar, com o Identificador único de uma Localização
@@ -46,32 +52,17 @@ public class Location {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getMaximumCapacity() {
         return maximumCapacity;
     }
 
-    public void setMaximumCapacity(int maximumCapacity) {
-        this.maximumCapacity = maximumCapacity;
-    }
-
     public Person.Role getRestrictedTo() {
         return restrictedTo;
-    }
-
-    public void setRestrictedTo(Person.Role restrictedTo) {
-        this.restrictedTo = restrictedTo;
     }
 
     @Override
