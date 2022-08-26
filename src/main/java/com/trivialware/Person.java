@@ -5,9 +5,9 @@ package com.trivialware;
  * nome e papel na universidade (Docente, Aluno, Funcionário ou Outro).
  */
 public class Person {
-    private String id;
-    private Role role;
-    private String name;
+    private final String id;
+    private final Role role;
+    private final String name;
 
     /**
      * Representação de uma Pessoa existente no sistema.
@@ -82,24 +82,12 @@ public class Person {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public Role getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override

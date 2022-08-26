@@ -101,29 +101,6 @@ public class University {
     }
 
     /**
-     * Obtém os eventos temporalmente sobrepostos aos eventos numa lista de eventos.
-     * Um evento está sobreposto a outro, se o mesmo não for o próprio, se a localização do mesmo for igual à do próprio
-     * e se o seu início e fim se se sobrepuserem com o início e fim do próprio, e também se este mesmo evento,
-     * se sobreposto a um da pessoa em questão, está no próprio intervalo temporal imposto aos eventos da pessoa
-     *
-     * @param personEvents Lista de eventos a encontrar sobreposições
-     * @return Lista de eventos sobrepostos aos eventos passados na lista de eventos por argumento
-     */
-    public ListADT<Event> getOverlappingEventsInTimeFrame(ListADT<Event> personEvents, LocalTime start, LocalTime end) {
-        UnorderedListADT<Event> eventList = new DoublyLinkedList<>();
-        //O(n*m)
-        for (Event event : getEvents()) {
-            for (Event personEvent : personEvents) {
-                if (personEvent.overlaps(event) &&
-                        (start.compareTo(event.getEndTime()) <= 0 && end.compareTo(event.getStartTime()) >= 0)) {
-                    eventList.addLast(event);
-                }
-            }
-        }
-        return eventList;
-    }
-
-    /**
      * Obtém os eventos (movimentos) de uma dada pessoa num intervalo temporal.
      * Permite indiretamente obter a localização de uma pessoa num dado intervalo temporal através de obter o primeiro
      * evento nesse dado intervalo.
@@ -162,6 +139,29 @@ public class University {
         for (Event event : getEvents()) {
             if (event.getPersonId().equals(personId)) {
                 eventList.addLast(event);
+            }
+        }
+        return eventList;
+    }
+
+    /**
+     * Obtém os eventos temporalmente sobrepostos aos eventos numa lista de eventos.
+     * Um evento está sobreposto a outro, se o mesmo não for o próprio, se a localização do mesmo for igual à do próprio
+     * e se o seu início e fim se se sobrepuserem com o início e fim do próprio, e também se este mesmo evento,
+     * se sobreposto a um da pessoa em questão, está no próprio intervalo temporal imposto aos eventos da pessoa
+     *
+     * @param personEvents Lista de eventos a encontrar sobreposições
+     * @return Lista de eventos sobrepostos aos eventos passados na lista de eventos por argumento
+     */
+    public ListADT<Event> getOverlappingEventsInTimeFrame(ListADT<Event> personEvents, LocalTime start, LocalTime end) {
+        UnorderedListADT<Event> eventList = new DoublyLinkedList<>();
+        //O(n*m)
+        for (Event event : getEvents()) {
+            for (Event personEvent : personEvents) {
+                if (personEvent.overlaps(event) &&
+                        (start.compareTo(event.getEndTime()) <= 0 && end.compareTo(event.getStartTime()) >= 0)) {
+                    eventList.addLast(event);
+                }
             }
         }
         return eventList;
@@ -356,7 +356,7 @@ public class University {
      *
      * @param event Evento a adicionar
      */
-    public void addEvent(Event event) {
+    private void addEvent(Event event) {
         Event currentEventByPerson = getCurrentEventByPerson(event.getPersonId());
         if (currentEventByPerson == null) {
             events.addLast(event);
