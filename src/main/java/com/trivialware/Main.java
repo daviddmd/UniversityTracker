@@ -5,6 +5,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+/**
+ * Ponto inicial de execução do programa, responsável por importar os dois ficheiros JSON de mapa da universidade
+ * e lista de movimentos e convertê-los na lista de localizações e movimentos respetivamente, e grafo das localizações
+ * e as suas respetivas localizações. Adicionalmente, se o ficheiro de pessoas existir, uma lista de pessoas será
+ * instanciada com as pessoas nos mesmos. Posteriormente, um objeto Universidade é criado com todas estas listas e
+ * grafos, e o menu da universidade é invocado com este objeto Universidade criado.
+ */
 public class Main {
 
     public static void main(String[] args) {

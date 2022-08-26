@@ -9,9 +9,6 @@ repositories {
     mavenCentral()
 }
 
-
-
-
 dependencies {
     implementation files('libs/DataStructures-1.3.jar')
     implementation 'org.jetbrains:annotations:23.0.0'
@@ -19,12 +16,14 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
     implementation 'org.json:json:20220320'
 }
+
 tasks.withType(Javadoc) {
     failOnError false
     options.addStringOption('Xdoclint:none', '-quiet')
     options.addStringOption('encoding', 'UTF-8')
     options.addStringOption('charSet', 'UTF-8')
 }
+
 
 application {
     mainClass = 'com.trivialware.Main'

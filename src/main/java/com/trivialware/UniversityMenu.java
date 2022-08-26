@@ -29,6 +29,32 @@ public class UniversityMenu {
         this.peopleFileName = peopleFileName;
     }
 
+    private String getPersonIdMenu() {
+        System.out.println("Introduza o Identificador da Pessoa ou deixe em branco para cancelar a operação:");
+        System.out.print("ID: ");
+        String personId = scanner.nextLine();
+        if (personId.isBlank()) {
+            return null;
+        }
+        return personId;
+    }
+
+    private LocalTime getTimeMenu() {
+        LocalTime time = null;
+        String timeString;
+        do {
+            try {
+                System.out.print("Hora: ");
+                timeString = scanner.nextLine();
+                time = LocalTime.parse(timeString);
+            }
+            catch (DateTimeParseException | NullPointerException e) {
+                System.out.println("Hora Inserida Inválida.");
+            }
+        } while (time == null);
+        return time;
+    }
+
     private void listPeople() {
         for (Person person : university.getPeople()) {
             System.out.printf("| ID: %s | Nome: %s | Papel: %s |%n", person.getId(), person.getName(), person.getRole());
@@ -85,16 +111,6 @@ public class UniversityMenu {
 
     }
 
-    private String getPersonIdMenu() {
-        System.out.println("Introduza o Identificador da Pessoa ou deixe em branco para cancelar a operação:");
-        System.out.print("ID: ");
-        String personId = scanner.nextLine();
-        if (personId.isBlank()) {
-            return null;
-        }
-        return personId;
-    }
-
     private void peopleMenu() {
         int menuOption;
         do {
@@ -127,21 +143,6 @@ public class UniversityMenu {
         } while (menuOption != 0);
     }
 
-    private LocalTime getTimeMenu() {
-        LocalTime time = null;
-        String timeString;
-        do {
-            try {
-                System.out.print("Hora: ");
-                timeString = scanner.nextLine();
-                time = LocalTime.parse(timeString);
-            }
-            catch (DateTimeParseException | NullPointerException e) {
-                System.out.println("Hora Inserida Inválida.");
-            }
-        } while (time == null);
-        return time;
-    }
 
     private void personCurrentLocationMenu() {
         String personId = getPersonIdMenu();
