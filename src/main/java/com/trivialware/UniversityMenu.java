@@ -3,6 +3,7 @@ package com.trivialware;
 import com.trivialware.helpers.ConsoleColors;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -290,7 +291,7 @@ public class UniversityMenu {
         }
     }
 
-    private void contactsMenu() {
+    private void contactsPersonTimeRange() {
         String personId = getPersonIdMenu();
         if (personId == null) {
             return;
@@ -300,23 +301,68 @@ public class UniversityMenu {
         System.out.println("Introduza a Hora de Fim (HH:MM:SS)");
         LocalTime endTime = getTimeMenu();
         ListADT<Event> events = university.getOverlappingEventsOfPersonInTimeFrame(personId, startTime, endTime);
+        printPersonContacts(events, personId);
+    }
+
+    private void contactsPersonAll() {
+        String personId = getPersonIdMenu();
+        if (personId == null) {
+            return;
+        }
+        ListADT<Event> events = university.getOverlappingEventsOfPersonInTimeFrame(personId, LocalTime.MIN, LocalTime.MAX);
+        printPersonContacts(events, personId);
+    }
+
+    private void contactsPersonLastHours() {
+        String personId = getPersonIdMenu();
+        if (personId == null) {
+            return;
+        }
+        Event event = university.getCurrentEventByPerson(personId);
+        if (event == null) {
+            System.out.println("A pessoa com o ID introduzido não tem qualquer movimento registado");
+            return;
+        }
+        System.out.println(ConsoleColors.YELLOW + "Último desta pessoa foi registado às " +
+                event.getStartTime() + " na localização " + event.getLocation() + ConsoleColors.RESET);
+        int lastEventsHours = event.getStartTime().getHour();
+        int numberHours;
+        System.out.println("Defina o número de horas desde o último movimento que pretende visualizar os movimentos:");
+        do {
+            try {
+                System.out.print("Horas: ");
+                numberHours = Integer.parseInt(scanner.nextLine());
+                if (lastEventsHours - numberHours < 0) {
+                    System.out.println("Número de Horas inseridas inválidas.");
+                }
+            }
+            catch (NumberFormatException e) {
+                numberHours = -1;
+            }
+        } while (numberHours < 0 || lastEventsHours - numberHours < 0);
+        ListADT<Event> events = university.getOverlappingEventsOfPersonInTimeFrame(personId,
+                LocalTime.of(lastEventsHours - numberHours, event.getStartTime().getMinute(), event.getStartTime().getSecond()),
+                event.getStartTime());
+        printPersonContacts(events, personId);
+    }
+
+    private void printPersonContacts(ListADT<Event> events, String personId) {
         UnorderedListADT<String> uniquePeople = new ArrayList<>(events.size());
         if (events.isEmpty()) {
             System.out.printf("A pessoa com identificador %s não teve contactos neste intervalo temporal.%n", personId);
+            return;
         }
-        else {
-            for (Event event : events) {
-                if (!uniquePeople.contains(event.getPersonId())) {
-                    uniquePeople.addLast(event.getPersonId());
-                }
-                if (event.getPerson() == null) {
-                    System.out.printf("| Hora: %s | Localização: %s | Identificador Pessoa Desconhecida: %s |%n",
-                            event.getStartTime(), event.getLocation(), event.getPersonId());
-                }
-                else {
-                    System.out.printf("| Hora: %s | Localização: %s | Pessoa: %s |%n",
-                            event.getStartTime(), event.getLocation(), event.getPerson());
-                }
+        for (Event event : events) {
+            if (!uniquePeople.contains(event.getPersonId())) {
+                uniquePeople.addLast(event.getPersonId());
+            }
+            if (event.getPerson() == null) {
+                System.out.printf("| Hora: %s | Localização: %s | Identificador Pessoa Desconhecida: %s |%n",
+                        event.getStartTime(), event.getLocation(), event.getPersonId());
+            }
+            else {
+                System.out.printf("| Hora: %s | Localização: %s | Pessoa: %s |%n",
+                        event.getStartTime(), event.getLocation(), event.getPerson());
             }
         }
         Person person;
@@ -335,37 +381,34 @@ public class UniversityMenu {
         }
         person = university.getPersonById(personId);
         if (person == null) {
-            System.out.printf("A pessoa com identificador %s teve contacto com as pessoas %s%n", personId, sb);
+            System.out.printf("A pessoa com identificador %s teve contacto com as pessoas: %s%n", personId, sb);
         }
         else {
-            System.out.printf("%s teve contacto com as pessoas %s%n", person, sb);
+            System.out.printf("%s teve contacto com as pessoas: %s%n", person, sb);
         }
     }
 
-    private void emergencyForAllPeople() {
-        StackADT<Location> path;
-        double cost;
-        UndirectedNetworkADT<Location> network = university.getNetwork();
-        StringBuilder sb;
-        String separator;
-        for (Person person : university.getPeople()) {
-            path = new LinkedStack<>();
-            separator = "";
-            sb = new StringBuilder();
-            cost = network.getCheapestPath(university.getCurrentLocationOfPerson(person.getId()), university.getLocationById(University.EMERGENCY_SPOT_ID), path);
-            if (cost > 0) {
-                sb.append(ConsoleColors.GREEN).append(String.format("Percurso de Emergência para %s: ", person)).append(ConsoleColors.RESET);
-                while (!path.empty()) {
-                    sb.append(ConsoleColors.BLUE).append(separator).append(ConsoleColors.RESET);
-                    sb.append(path.pop());
-                    separator = "→";
-                }
-                sb.append(". ");
-                sb.append(ConsoleColors.GREEN).append("Distância: ").append(ConsoleColors.RESET).append(cost).append(" metros.");
-                System.out.println(sb);
-            }
+    private void contactsMenu() {
+        int menuOption;
+        do {
+            System.out.println("0-Voltar para o Menu Anterior");
+            System.out.println("1-Apresentar Contactos de uma pessoa num Intervalo Temporal");
+            System.out.println("2-Apresentar Todos os Contactos de uma Pessoa durante o Dia");
+            System.out.println("3-Apresentar Contactos de uma pessoa nas últimas x Horas");
+            try {
+                System.out.print("Escolha: ");
+                menuOption = Integer.parseInt(scanner.nextLine());
+                switch (menuOption) {
+                    case 1 -> contactsPersonTimeRange();
+                    case 2 -> contactsPersonAll();
+                    case 3 -> contactsPersonLastHours();
 
-        }
+                }
+            }
+            catch (NumberFormatException e) {
+                menuOption = -1;
+            }
+        } while (menuOption != 0);
     }
 
     private void emergencyForPerson(String personId) {
@@ -390,13 +433,26 @@ public class UniversityMenu {
             System.out.println(sb);
         }
         else {
-            System.out.printf("Não existe percurso de emergência para pessoa com identificador %s%n", personId);
+            System.out.printf(ConsoleColors.RED + "Não existe percurso de emergência para pessoa com identificador %s%n" + ConsoleColors.RESET, personId);
+        }
+    }
+
+    private void emergencyForAllPeople() {
+        for (Person person : university.getPeople()) {
+            emergencyForPerson(person.getId());
+
+        }
+    }
+
+    private void emergencyForOnePersonMenu() {
+        String personId = getPersonIdMenu();
+        if (personId != null) {
+            emergencyForPerson(personId);
         }
     }
 
     private void emergencyMenu() {
         int menuOption;
-        String personId;
         do {
             System.out.println("0-Voltar para o Menu Anterior");
             System.out.println("1-Simular Emergência para Todas as Pessoas no Sistema");
@@ -406,10 +462,7 @@ public class UniversityMenu {
                 menuOption = Integer.parseInt(scanner.nextLine());
                 switch (menuOption) {
                     case 1 -> emergencyForAllPeople();
-                    case 2 -> {
-                        personId = getPersonIdMenu();
-                        emergencyForPerson(personId);
-                    }
+                    case 2 -> emergencyForOnePersonMenu();
                 }
             }
             catch (NumberFormatException e) {
