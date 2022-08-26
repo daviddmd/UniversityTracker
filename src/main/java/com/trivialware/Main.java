@@ -1,13 +1,13 @@
 package com.trivialware;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 
 public class Main {
     public static void main(String[] args) {
+
         try (InputStream input = Main.class.getClassLoader().getResourceAsStream("config.properties")) {
             Properties prop = new Properties();
             prop.load(input);

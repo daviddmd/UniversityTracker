@@ -3,7 +3,6 @@ package com.trivialware;
 import com.trivialware.helpers.ConsoleColors;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
@@ -31,13 +30,13 @@ public class UniversityMenu {
         name = scanner.nextLine();
         System.out.print("Identificador Único: ");
         id = scanner.nextLine();
-
+        System.out.println("Escolha o papel da Pessoa a Adicionar:");
         do {
             for (Person.Role role : Person.Role.values()) {
                 System.out.printf("%d - %s%n", role.ordinal(), role);
             }
             try {
-                System.out.print("Escolha: ");
+                System.out.print("Opção: ");
                 roleChoice = Integer.parseInt(scanner.nextLine());
             }
             catch (NumberFormatException e) {
@@ -471,6 +470,24 @@ public class UniversityMenu {
         } while (menuOption != 0);
     }
 
+    private void printMap() {
+        UndirectedNetworkADT<Location> network = university.getNetwork();
+        StringBuilder sb;
+        String separator;
+        for (Location location : university.getLocations()) {
+            sb = new StringBuilder();
+            separator = "";
+            for (Location neighbour : network.getNeighbours(location)) {
+                sb.append(separator);
+                sb.append(neighbour);
+                separator = ",";
+            }
+            System.out.println("Localização: " + ConsoleColors.GREEN + location + ConsoleColors.RESET +
+                    " Ligações: " + ConsoleColors.BLUE + sb + ConsoleColors.RESET);
+        }
+
+    }
+
     public void mainMenu() {
         int menuOption;
         do {
@@ -480,6 +497,7 @@ public class UniversityMenu {
             System.out.println("3-Ver Mensagens (Avisos/Alertas)");
             System.out.println("4-Consultar Contactos Efectuados por Pessoa");
             System.out.println("5-Simular Emergência");
+            System.out.println("6-Ver Mapa Universidade");
             try {
                 System.out.print("Escolha: ");
                 /*
@@ -493,6 +511,7 @@ public class UniversityMenu {
                     case 3 -> messageMenu();
                     case 4 -> contactsMenu();
                     case 5 -> emergencyMenu();
+                    case 6 -> printMap();
                 }
             }
             catch (NumberFormatException e) {
