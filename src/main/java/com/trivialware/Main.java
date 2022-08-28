@@ -1,6 +1,7 @@
 package com.trivialware;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -17,6 +18,7 @@ public class Main {
     public static void main(String[] args) {
 
         try (InputStream input = Main.class.getClassLoader().getResourceAsStream("config.properties")) {
+            System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8));
             Properties prop = new Properties();
             prop.load(input);
             String movementsFileName = prop.getProperty("app.movements_file_name");

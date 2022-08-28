@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Scanner;
 public class UniversityMenu {
     private final University university;
     private final String peopleFileName;
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner;
 
     /**
      * Construtor para a classe de Menu da Universidade, que recebe um Objeto Universidade, e o caminho do ficheiro
@@ -27,6 +28,8 @@ public class UniversityMenu {
     public UniversityMenu(University university, String peopleFileName) {
         this.university = university;
         this.peopleFileName = peopleFileName;
+        scanner = new Scanner(System.in, StandardCharsets.UTF_8);
+        //this.scanner.useLocale(Locale.getDefault());
     }
 
     private String getPersonIdMenu() {

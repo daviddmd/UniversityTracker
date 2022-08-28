@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 
 /**
@@ -39,7 +40,7 @@ public class FileHelper {
      * @throws IOException Caso o ficheiro não exista ou exista um erro de JSON no ficheiro
      */
     public static UnorderedListADT<Location> importLocations(String fileName) throws IOException {
-        FileReader fr = new FileReader(fileName);
+        FileReader fr = new FileReader(fileName, StandardCharsets.UTF_8);
         JSONTokener tokener = new JSONTokener(fr);
         JSONObject object = new JSONObject(tokener);
         JSONArray locationsJSON = object.getJSONArray("locations");
@@ -67,11 +68,11 @@ public class FileHelper {
      * @throws IOException Caso o ficheiro não exista ou exista um erro de JSON no ficheiro
      */
     public static UnorderedListADT<Person> importPeople(String fileName) throws IOException {
-        FileReader fr = new FileReader(fileName);
+        FileReader fr = new FileReader(fileName, StandardCharsets.UTF_8);
         JSONTokener tokener = new JSONTokener(fr);
         JSONArray peopleJSON = new JSONArray(tokener);
         JSONObject personJSON;
-        UnorderedListADT<Person> people = new ArrayList<>(peopleJSON.length());
+        UnorderedListADT<Person> people = new ArrayList<>(peopleJSON.length() * 2);
         String id, name;
         Person.Role role;
         for (int i = 0; i < peopleJSON.length(); i++) {
@@ -101,8 +102,8 @@ public class FileHelper {
             personJSON.put("role", person.getRole() == null ? "" : Person.Role.fromRole(person.getRole()));
             peopleJSON.put(personJSON);
         }
-        try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(fileName)))) {
+        try (OutputStreamWriter writer = new OutputStreamWriter(
+                new FileOutputStream(fileName), StandardCharsets.UTF_8)) {
             writer.write(peopleJSON.toString(4));
         }
     }
@@ -123,7 +124,7 @@ public class FileHelper {
         for (Location location : locations) {
             network.addVertex(location);
         }
-        FileReader fr = new FileReader(fileName);
+        FileReader fr = new FileReader(fileName, StandardCharsets.UTF_8);
         JSONTokener tokener = new JSONTokener(fr);
         JSONObject object = new JSONObject(tokener);
         JSONArray relationshipsJSON = object.getJSONArray("relationships");
@@ -154,7 +155,7 @@ public class FileHelper {
      * @return Lista com todos os Movimentos ocorridos no ficheiro
      */
     public static UnorderedListADT<Event> importEvents(ListADT<Person> people, ListADT<Location> locations, String fileName) throws IOException {
-        FileReader fr = new FileReader(fileName);
+        FileReader fr = new FileReader(fileName, StandardCharsets.UTF_8);
         JSONTokener tokener = new JSONTokener(fr);
         JSONArray eventsJSON = new JSONArray(tokener);
         JSONObject eventJSON;

@@ -119,7 +119,7 @@ public class University {
         na lista de eventos do sistema já estão ordenados pela sua data de início, portanto não é necessário o overhead
         de verificação de ordenação adicional).
          */
-        UnorderedListADT<Event> eventList = new DoublyLinkedList<>();
+        UnorderedListADT<Event> eventList = new ArrayList<>(events.size());
         for (Event event : getEvents()) {
             if (event.getPersonId().equals(personId) && (start.compareTo(event.getEndTime()) <= 0 && end.compareTo(event.getStartTime()) >= 0)) {
                 eventList.addLast(event);
@@ -135,7 +135,7 @@ public class University {
      * @return Lista de eventos/movimentos registados da pessoa
      */
     public ListADT<Event> getEventsOfPerson(String personId) {
-        UnorderedListADT<Event> eventList = new DoublyLinkedList<>();
+        UnorderedListADT<Event> eventList = new ArrayList<>(events.size());
         for (Event event : getEvents()) {
             if (event.getPersonId().equals(personId)) {
                 eventList.addLast(event);
@@ -154,7 +154,7 @@ public class University {
      * @return Lista de eventos sobrepostos aos eventos passados na lista de eventos por argumento
      */
     public ListADT<Event> getOverlappingEventsInTimeFrame(ListADT<Event> personEvents, LocalTime start, LocalTime end) {
-        UnorderedListADT<Event> eventList = new DoublyLinkedList<>();
+        UnorderedListADT<Event> eventList = new ArrayList<>(events.size());
         //O(n*m)
         for (Event event : getEvents()) {
             for (Event personEvent : personEvents) {
@@ -422,7 +422,7 @@ public class University {
         Irá haver dois tipos de notificações, pessoas não existentes e falta de autorização. Detetar no runtime se
         a pessoa do evento é nula, caso contrário é uma violação do tipo papel
          */
-        UnorderedListADT<Event> violations = new DoublyLinkedList<>();
+        UnorderedListADT<Event> violations = new ArrayList<>(events.size());
         for (Event event : getEvents()) {
             if (event.getPerson() == null) {
                 violations.addLast(event);
