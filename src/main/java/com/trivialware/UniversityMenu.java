@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
-import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -29,7 +28,6 @@ public class UniversityMenu {
         this.university = university;
         this.peopleFileName = peopleFileName;
         scanner = new Scanner(System.in, StandardCharsets.UTF_8);
-        //this.scanner.useLocale(Locale.getDefault());
     }
 
     private String getPersonIdMenu() {

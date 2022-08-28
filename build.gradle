@@ -33,9 +33,8 @@ tasks.withType(Javadoc) {
 
 application {
     mainClass = 'com.trivialware.Main'
+    applicationDefaultJvmArgs = ['-Dfile.encoding=UTF-8', '-Dconsole.encoding=UTF-8']
 }
-
-applicationDefaultJvmArgs=["-Dfile.encoding=UTF-8","-Dconsole.encoding=UTF-8"]
 
 
 run {
