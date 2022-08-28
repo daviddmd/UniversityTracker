@@ -1,7 +1,4 @@
 package com.trivialware;
-
-import java.util.Objects;
-
 /*
  * Todas as localizações a instanciar existirão no grafo, excepto uma localização especial que é o ponto de emergência
  * Nem todos os edifícios/localizações podem estar ligados entre si (exemplo, auditórios com pavilhões), porém, todos os
