@@ -67,7 +67,7 @@ public class University {
         for (Event event : events) {
             eventArray[currentIndex++] = event;
         }
-        ArraySorts.quickSort(eventArray);
+        ArraySorts.heapSort(eventArray);
         for (Event event : eventArray) {
             addEvent(event);
         }
