@@ -61,6 +61,7 @@ public class Event implements Comparable<Event> {
     public LocalTime getStartTime() {
         return startTime;
     }
+
     public LocalTime getEndTime() {
         return endTime;
     }
@@ -72,6 +73,7 @@ public class Event implements Comparable<Event> {
     public String getPersonId() {
         return personId;
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -88,6 +90,14 @@ public class Event implements Comparable<Event> {
     @Override
     public int compareTo(Event o) {
         return startTime.compareTo(o.getStartTime());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return personId.equals(event.personId) && location.equals(event.location) && startTime.equals(event.startTime);
     }
 
     /**
