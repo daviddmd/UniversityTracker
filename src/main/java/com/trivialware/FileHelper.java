@@ -119,6 +119,13 @@ public class FileHelper {
      * localizações da universidade
      * @throws IOException Caso o ficheiro JSON de mapa não exista ou exista um erro de sintaxe JSON no mesmo
      */
+    /*
+    Podia-se ter chamado esta função com o objeto JSON lido na função importLocations, porém para questão de
+    simplicidade no processo de importação optou-se por realizar o processo deste modo. Um modo alterativo seria
+    instanciar um objeto Lista e Rede no main e passar estes objetos por referência para o procedimento de importar
+    localizações. Daí, esta função tornar-se-ia um procedimento que receberia um objeto de rede para modificar,
+    recebendo um objeto json com o JSON de relações entre localizações e a Lista das localizações agora importada.
+     */
     public static UndirectedNetworkADT<Location> buildNetwork(ListADT<Location> locations, String fileName) throws IOException {
         UndirectedNetworkADT<Location> network = new AdjacencyListUndirectedNetwork<>();
         for (Location location : locations) {

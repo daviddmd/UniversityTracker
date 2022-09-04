@@ -48,7 +48,8 @@ public class University {
      * @param people    Lista de Pessoas
      * @param network   Rede (Grafo Pesado não dirigido) associado às relações das localizações da universidade
      */
-    public University(UnorderedListADT<Location> locations, UnorderedListADT<Event> events, UnorderedListADT<Person> people, UndirectedNetworkADT<Location> network) {
+    public University(UnorderedListADT<Location> locations, UnorderedListADT<Event> events,
+                      UnorderedListADT<Person> people, UndirectedNetworkADT<Location> network) {
         this.locations = locations;
         this.events = new ArrayList<>(events.size());
         /*
@@ -116,7 +117,8 @@ public class University {
          */
         UnorderedListADT<Event> eventList = new ArrayList<>(events.size());
         for (Event event : getEvents()) {
-            if (event.getPersonId().equals(personId) && (start.compareTo(event.getEndTime()) <= 0 && end.compareTo(event.getStartTime()) >= 0)) {
+            if (event.getPersonId().equals(personId) && (start.compareTo(event.getEndTime()) <= 0 &&
+                    end.compareTo(event.getStartTime()) >= 0)) {
                 eventList.addLast(event);
             }
         }
