@@ -1,27 +1,37 @@
 [
   {
-    "id": "1",
+    "role": "STUDENT",
     "name": "Carlos Sousa",
-    "role": "STUDENT"
+    "id": "8180111"
   },
   {
-    "id": "2",
+    "role": "STUDENT",
     "name": "Pedro Santos",
-    "role": "STUDENT"
+    "id": "8180112"
   },
   {
-    "id": "3",
+    "role": "WORKER",
     "name": "Rosa Soares",
-    "role": "WORKER"
+    "id": "8180113"
   },
   {
-    "id": "4",
+    "role": "STUDENT",
     "name": "João Silva",
-    "role": "STUDENT"
+    "id": "8180114"
   },
   {
-    "id": "5",
+    "role": "STUDENT",
     "name": "Ricardo Ferreira",
-    "role": "STUDENT"
+    "id": "8180115"
+  },
+  {
+    "role": "STUDENT",
+    "name": "Rita Pacheco",
+    "id": "8180116"
+  },
+  {
+    "role": "TEACHER",
+    "name": "Rigoberto Campos",
+    "id": "8180117"
   }
 ]

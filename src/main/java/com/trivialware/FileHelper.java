@@ -186,7 +186,7 @@ public class FileHelper {
                 events.addLast(new Event(person, personId, location, time));
             }
             else {
-                throw new IOException("Invalid Location Found");
+                throw new IOException("Invalid Location Found: " + locationId);
             }
         }
         return events;
