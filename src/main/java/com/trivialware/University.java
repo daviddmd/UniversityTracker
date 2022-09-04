@@ -12,15 +12,10 @@ import java.time.LocalTime;
  * universidade com as localizações, eventos e rede gerada a partir das localizações e as suas relações. Se existir
  * um ficheiro com as pessoas, o mesmo será também importado.
  */
-/*
-Não se usaram bastante linkedlists porque a natureza da informação neste programa é maioritariamente imutável, portanto
-não há necessidade de operações que trariam vantagem às mesmas como remover o primeiro elemento ou inserir no meio da lista
- */
 public class University {
     //Lista de Pessoas, Localizações e Eventos, métodos para caminhos mais curtos entre X e Ponto Emergência
     public static final String EMERGENCY_SPOT_ID = "EMERGENCY_SPOT";
     private final UnorderedListADT<Location> locations;
-    //Pode vir a ser uma AVL Tree
     private final UnorderedListADT<Event> events;
     private UnorderedListADT<Person> people;
 
