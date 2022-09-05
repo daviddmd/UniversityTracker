@@ -30,12 +30,12 @@
     "time": "13:55:31"
   },
   {
-    "location_id": "SERVICOS_ACADEMICOS",
+    "location_id": "SA",
     "person_id": "8180113",
     "time": "12:00:00"
   },
   {
-    "location_id": "SERVICOS_ACADEMICOS",
+    "location_id": "SA",
     "person_id": "8180111",
     "time": "12:05:00"
   },
@@ -75,7 +75,7 @@
     "time": "19:00:05"
   },
   {
-    "location_id": "SERVICOS_ACADEMICOS",
+    "location_id": "SA",
     "person_id": "8180117",
     "time": "18:30:44"
   },

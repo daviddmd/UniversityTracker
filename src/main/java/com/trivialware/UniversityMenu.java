@@ -437,7 +437,7 @@ public class UniversityMenu {
         separator = "";
         sb = new StringBuilder();
         cost = network.getCheapestPath(university.getCurrentLocationOfPerson(personId), university.getLocationById(University.EMERGENCY_SPOT_ID), path);
-        if (cost > 0) {
+        if (cost > 0 && cost != Double.MAX_VALUE) {
             sb.append(ConsoleColors.GREEN).append(String.format("Percurso de Emergência para Pessoa com Identificador %s: ", personId)).append(ConsoleColors.RESET);
             while (!path.empty()) {
                 sb.append(ConsoleColors.BLUE).append(separator).append(ConsoleColors.RESET);

@@ -13,7 +13,7 @@
       "restricted_to": ""
     },
     {
-      "id": "SERVICOS_ACADEMICOS",
+      "id": "SA",
       "name": "Serviços Académicos",
       "maximum_capacity": 10,
       "restricted_to": "WORKER"
